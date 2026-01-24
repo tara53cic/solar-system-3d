@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vertices.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\VAOManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\TextRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Vertices.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\VAOManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Shaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Shaders\rect.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\rect.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\3dshader.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\3dshader.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\skysphere.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\skysphere.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Resources\hiptyc_2020_4k.hdr">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\starmap_2020_4k_gal.hdr">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\nametag2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\star.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\purpletransparent50.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\captured1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\captured2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\captured3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\captured4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\captured5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\captured6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\captured7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\captured8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\uncaptured1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\uncaptured2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\uncaptured3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\uncaptured4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\uncaptured5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\uncaptured6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\uncaptured7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\uncaptured8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\mission-incomplete.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\instructions.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\mission-accomplished.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\take-onboard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\background.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\background-square.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Purple_Nebula_07-1024x1024.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Purple_Nebula_08-1024x1024.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Purple_Nebula_01-1024x1024.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Purple_Nebula_02-1024x1024.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Purple_Nebula_03-1024x1024.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Purple_Nebula_04-1024x1024.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Purple_Nebula_05-1024x1024.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Purple_Nebula_06-1024x1024.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\square2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\square1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\square6.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\square5.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\square3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\square4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\stars2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\stars3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\stars4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\stars5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\stars6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\stars1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\galaxy-Z.tga">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\galaxy+X.tga">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\galaxy+Y.tga">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\galaxy+Z.tga">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\galaxy-X.tga">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\galaxy-Y.tga">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\starmap_2020_4k_gal_print.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\hiptyc_2020_4k_print.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_neptune.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_saturn.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_saturn_ring_alpha.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_sun.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_uranus.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_venus_surface.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_ceres_fictional.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_earth_daymap.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_jupiter.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_mars.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\2k_mercury.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\ScienceGothic_Condensed-Regular.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
+</Project>

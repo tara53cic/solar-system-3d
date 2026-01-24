@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{6eecf44a-001f-42a3-91f3-62168f9e8c1d}</ProjectGuid>
+    <RootNamespace>Kostur</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>   C:\Users\User\Desktop\RG\RG_Kostur\Kostur\vcpkg\installed\x64-windows\include
+</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>C:\Users\User\Desktop\RG\RG_Kostur\Kostur\vcpkg\installed\x64-windows\lib\freetype.lib;opengl32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Collision.cpp" />
+    <ClCompile Include="Source\Draw.cpp" />
+    <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Shaders.cpp" />
+    <ClCompile Include="Source\TextRenderer.cpp" />
+    <ClCompile Include="Source\Util.cpp" />
+    <ClCompile Include="Source\VAOManager.cpp" />
+    <ClCompile Include="Source\Vertices.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header\Collision.h" />
+    <ClInclude Include="Header\Draw.h" />
+    <ClInclude Include="Header\Input.h" />
+    <ClInclude Include="Header\Shaders.h" />
+    <ClInclude Include="Header\stb_image.h" />
+    <ClInclude Include="Header\TextRenderer.h" />
+    <ClInclude Include="Header\Util.h" />
+    <ClInclude Include="Header\VAOManager.h" />
+    <ClInclude Include="Header\Vertices.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\hiptyc_2020_4k.hdr" />
+    <None Include="Resources\starmap_2020_4k_gal.hdr" />
+    <None Include="Shaders\3dshader.frag" />
+    <None Include="Shaders\3dshader.vert" />
+    <None Include="Shaders\rect.frag" />
+    <None Include="Shaders\rect.vert" />
+    <None Include="Shaders\skysphere.frag" />
+    <None Include="Shaders\skysphere.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\2k_ceres_fictional.jpg" />
+    <Image Include="Resources\2k_earth_daymap.jpg" />
+    <Image Include="Resources\2k_jupiter.jpg" />
+    <Image Include="Resources\2k_mars.jpg" />
+    <Image Include="Resources\2k_mercury.jpg" />
+    <Image Include="Resources\2k_neptune.jpg" />
+    <Image Include="Resources\2k_saturn.jpg" />
+    <Image Include="Resources\2k_saturn_ring_alpha.png" />
+    <Image Include="Resources\2k_sun.jpg" />
+    <Image Include="Resources\2k_uranus.jpg" />
+    <Image Include="Resources\2k_venus_surface.jpg" />
+    <Image Include="Resources\background-square.jpg" />
+    <Image Include="Resources\background.jpg" />
+    <Image Include="Resources\captured1.png" />
+    <Image Include="Resources\captured2.png" />
+    <Image Include="Resources\captured3.png" />
+    <Image Include="Resources\captured4.png" />
+    <Image Include="Resources\captured5.png" />
+    <Image Include="Resources\captured6.png" />
+    <Image Include="Resources\captured7.png" />
+    <Image Include="Resources\captured8.png" />
+    <Image Include="Resources\galaxy+X.tga" />
+    <Image Include="Resources\galaxy+Y.tga" />
+    <Image Include="Resources\galaxy+Z.tga" />
+    <Image Include="Resources\galaxy-X.tga" />
+    <Image Include="Resources\galaxy-Y.tga" />
+    <Image Include="Resources\galaxy-Z.tga" />
+    <Image Include="Resources\hiptyc_2020_4k_print.jpg" />
+    <Image Include="Resources\instructions.png" />
+    <Image Include="Resources\mission-accomplished.png" />
+    <Image Include="Resources\mission-incomplete.png" />
+    <Image Include="Resources\nametag2.png" />
+    <Image Include="Resources\purpletransparent50.png" />
+    <Image Include="Resources\Purple_Nebula_01-1024x1024.png" />
+    <Image Include="Resources\Purple_Nebula_02-1024x1024.png" />
+    <Image Include="Resources\Purple_Nebula_03-1024x1024.png" />
+    <Image Include="Resources\Purple_Nebula_04-1024x1024.png" />
+    <Image Include="Resources\Purple_Nebula_05-1024x1024.png" />
+    <Image Include="Resources\Purple_Nebula_06-1024x1024.png" />
+    <Image Include="Resources\Purple_Nebula_07-1024x1024.png" />
+    <Image Include="Resources\Purple_Nebula_08-1024x1024.png" />
+    <Image Include="Resources\square1.jpg" />
+    <Image Include="Resources\square2.jpg" />
+    <Image Include="Resources\square3.jpg" />
+    <Image Include="Resources\square4.jpg" />
+    <Image Include="Resources\square5.jpg" />
+    <Image Include="Resources\square6.jpg" />
+    <Image Include="Resources\star.png" />
+    <Image Include="Resources\starmap_2020_4k_gal_print.jpg" />
+    <Image Include="Resources\stars1.png" />
+    <Image Include="Resources\stars2.png" />
+    <Image Include="Resources\stars3.png" />
+    <Image Include="Resources\stars4.png" />
+    <Image Include="Resources\stars5.png" />
+    <Image Include="Resources\stars6.png" />
+    <Image Include="Resources\take-onboard.png" />
+    <Image Include="Resources\uncaptured1.png" />
+    <Image Include="Resources\uncaptured2.png" />
+    <Image Include="Resources\uncaptured3.png" />
+    <Image Include="Resources\uncaptured4.png" />
+    <Image Include="Resources\uncaptured5.png" />
+    <Image Include="Resources\uncaptured6.png" />
+    <Image Include="Resources\uncaptured7.png" />
+    <Image Include="Resources\uncaptured8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\ScienceGothic_Condensed-Regular.ttf" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\glfw.3.4.0\build\native\glfw.targets" Condition="Exists('packages\glfw.3.4.0\build\native\glfw.targets')" />
+    <Import Project="packages\glew-2.2.0.2.2.0.1\build\native\glew-2.2.0.targets" Condition="Exists('packages\glew-2.2.0.2.2.0.1\build\native\glew-2.2.0.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\glfw.3.4.0\build\native\glfw.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\glfw.3.4.0\build\native\glfw.targets'))" />
+    <Error Condition="!Exists('packages\glew-2.2.0.2.2.0.1\build\native\glew-2.2.0.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\glew-2.2.0.2.2.0.1\build\native\glew-2.2.0.targets'))" />
+  </Target>
+</Project>
