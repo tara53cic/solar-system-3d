@@ -39,5 +39,7 @@ void formVAOs(
     float* verticesSkySphere, size_t skySphereSize, unsigned int& VAOskySphere,
 
     //Planetarna sfera
-    SphereMesh ballMesh, unsigned int& VAOball
+    SphereMesh ballMesh, unsigned int& VAOball,
+
+    RingMesh ringMesh, unsigned int& VAOring
 );

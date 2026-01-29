@@ -35,3 +35,15 @@ struct SphereMesh {
 };
 SphereMesh generateSphereTextured(float radius, int sectorCount, int stackCount);
 
+//Saturn ring
+struct RingMesh {
+    std::vector<float> vertices;
+    std::vector<unsigned int> indices;
+};
+
+RingMesh generateRing(
+    float innerRadius,
+    float outerRadius,
+    int segments
+);
+

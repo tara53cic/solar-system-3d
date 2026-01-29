@@ -22,4 +22,14 @@ void drawSphere(unsigned int unifiedShader,
     const glm::mat4& model,
     const glm::mat4& projection,
     const glm::mat4& view);
+
+void drawRing(
+    unsigned int unifiedShader,
+    unsigned int VAOring,
+    unsigned int ringTexture,
+    const RingMesh& ringMesh,
+    const glm::mat4& model,
+    const glm::mat4& projection,
+    const glm::mat4& view
+);
 #pragma once

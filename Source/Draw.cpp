@@ -111,3 +111,43 @@ void drawSphere(
     glDrawElements(GL_TRIANGLES, ballMesh.indices.size(), GL_UNSIGNED_INT, 0);
 }
 
+void drawRing(
+    unsigned int unifiedShader,
+    unsigned int VAOring,
+    unsigned int ringTexture,
+    const RingMesh& ringMesh,
+    const glm::mat4& model,
+    const glm::mat4& projection,
+    const glm::mat4& view
+) {
+    glUseProgram(unifiedShader);
+
+    glUniformMatrix4fv(
+        glGetUniformLocation(unifiedShader, "uV"),
+        1, GL_FALSE, glm::value_ptr(view)
+    );
+
+    glUniformMatrix4fv(
+        glGetUniformLocation(unifiedShader, "uP"),
+        1, GL_FALSE, glm::value_ptr(projection)
+    );
+
+    glUniformMatrix4fv(
+        glGetUniformLocation(unifiedShader, "uM"),
+        1, GL_FALSE, glm::value_ptr(model)
+    );
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, ringTexture);
+    glUniform1i(glGetUniformLocation(unifiedShader, "uTexture"), 0);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+
+    glBindVertexArray(VAOring);
+    glDrawElements(GL_TRIANGLES, ringMesh.indices.size(), GL_UNSIGNED_INT, 0);
+
+
+
+}
+

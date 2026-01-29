@@ -168,6 +168,43 @@ SphereMesh generateSphereTextured(float radius, int sectorCount, int stackCount)
 	return mesh;
 }
 
+RingMesh generateRing(
+	float innerRadius,
+	float outerRadius,
+	int segments
+) {
+	RingMesh mesh;
+
+	for (int i = 0; i <= segments; i++) {
+		float angle = (float)i / segments * 2.0f * M_PI;
+		float cosA = cosf(angle);
+		float sinA = sinf(angle);
+
+		// OUTER vertex
+		mesh.vertices.insert(mesh.vertices.end(), {
+			outerRadius * cosA, 0.0f, outerRadius * sinA,
+			1.0f, 1.0f, 1.0f, 1.0f,
+			(float)i / segments, 1.0f
+			});
+
+		// INNER vertex
+		mesh.vertices.insert(mesh.vertices.end(), {
+			innerRadius * cosA, 0.0f, innerRadius * sinA,
+			1.0f, 1.0f, 1.0f, 1.0f,
+			(float)i / segments, 0.0f
+			});
+	}
+
+	for (unsigned int i = 0; i < segments * 2; i += 2) {
+		mesh.indices.insert(mesh.indices.end(), {
+			i, i + 1, i + 2,
+			i + 1, i + 3, i + 2
+			});
+	}
+
+	return mesh;
+}
+
 
 
 

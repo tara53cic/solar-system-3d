@@ -20,7 +20,7 @@ float simDistanceTravelled = 0.0f;
 glm::vec3 lastCameraPos = cameraPos;
 
 bool ENABLE_DEPTH_TEST = true;
-bool ENABLE_CULL_FACE = true;
+bool ENABLE_CULL_FACE = false;
 
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {

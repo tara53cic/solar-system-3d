@@ -36,7 +36,9 @@ void formVAOs(
 
     float* verticesSkySphere, size_t skySphereSize, unsigned int& VAOskySphere,
 
-    SphereMesh ballMesh, unsigned int& VAOball
+    SphereMesh ballMesh, unsigned int& VAOball,
+
+    RingMesh ringMesh, unsigned int& VAOring
 
 ) {
 
@@ -244,6 +246,35 @@ void formVAOs(
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOball);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, ballMesh.indices.size() * sizeof(unsigned int), ballMesh.indices.data(), GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
+
+
+    // -------------------- Saturn ring --------------------
+    unsigned int VBOring, EBOring;
+    glGenVertexArrays(1, &VAOring);
+    glGenBuffers(1, &VBOring);
+    glGenBuffers(1, &EBOring);
+
+    glBindVertexArray(VAOring);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBOring);
+    glBufferData(GL_ARRAY_BUFFER, ringMesh.vertices.size() * sizeof(float), ringMesh.vertices.data(), GL_STATIC_DRAW);
+
+    // Pozicija
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Boja
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    // UV
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(7 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOring);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ringMesh.indices.size() * sizeof(unsigned int), ringMesh.indices.data(), GL_STATIC_DRAW);
 
     glBindVertexArray(0);
 

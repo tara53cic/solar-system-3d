@@ -38,7 +38,7 @@ struct Planet {
 
 unsigned sunTexture, mercuryTexture, venusTexture, earthTexture,
 	marsTexture, jupiterTexture, saturnTexture,
-	uranusTexture, neptuneTexture, plutoTexture;
+	uranusTexture, neptuneTexture, plutoTexture,saturnRingTexture;
 
 
 // ------------------------------- HELPER FUNCTIONS -------------------------------
@@ -152,6 +152,7 @@ int main() {
     preprocessTexture(uranusTexture, "Resources/2k_uranus.jpg");
     preprocessTexture(neptuneTexture, "Resources/2k_neptune.jpg");
     preprocessTexture(plutoTexture, "Resources/2k_ceres_fictional.jpg");
+    preprocessTexture(saturnRingTexture, "Resources/2k_saturn_ring_alpha.png");
 
     float scaleFactor = 1.0f;
     float distanceFactor = 1.0f;
@@ -182,6 +183,12 @@ int main() {
     float* skySphereVertices = skySphereVec.data();
     size_t skySphereSize = skySphereVec.size() * sizeof(float);
 
+    //RING
+    RingMesh saturnRing = generateRing(1.2f, 2.2f, 128);
+
+    float* ringVertices = saturnRing.vertices.data();
+    size_t ringSize = saturnRing.vertices.size() * sizeof(float);
+
 
     // ---------------- SHADERS ----------------
     unsigned nametagShader, alienIconShader, distanceBgShader, unifiedShader, skysphereShader;
@@ -194,6 +201,7 @@ int main() {
     unsigned VAOsaturnIcon, VAOuranusIcon, VAOneptuneIcon, VAOplutoIcon;
     unsigned VAOball;
     unsigned VAOskySphere;
+    unsigned VAOsaturnRing;
 
 
     formVAOs(
@@ -208,7 +216,8 @@ int main() {
         verticesUranusIcon, sizeof(verticesUranusIcon), VAOuranusIcon,
         verticesNeptuneIcon, sizeof(verticesNeptuneIcon), VAOneptuneIcon,
         skySphereVertices, skySphereSize, VAOskySphere,
-        ballMesh, VAOball
+        ballMesh, VAOball,
+        saturnRing, VAOsaturnRing
     );
 
 
@@ -243,6 +252,25 @@ int main() {
 
         // Skysphere
         drawSkySphere(skysphereShader, VAOskySphere, skysphereTexture, skySphereVec, projection, view);
+
+        glm::mat4 ringModel = glm::mat4(1.0f);
+        ringModel = glm::translate(ringModel, glm::vec3(9.0f, 0.0f, 0.0f));
+        ringModel = glm::rotate(
+            ringModel,
+            glm::radians(20.0f),
+            glm::vec3(0, 0, 1)
+        );
+        ringModel = glm::scale(ringModel, glm::vec3(0.35f)); 
+
+        drawRing(
+            unifiedShader,
+            VAOsaturnRing,
+            saturnRingTexture,
+            saturnRing,
+            ringModel,
+            projection,
+            view
+        );
 
         // Planets
 
