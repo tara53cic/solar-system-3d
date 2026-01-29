@@ -33,6 +33,12 @@ struct SphereMesh {
     std::vector<float> vertices;       // x, y, z, r, g, b, a, u, v
     std::vector<unsigned int> indices;
 };
+
+struct Planet {
+    float x;
+    float scale;
+    unsigned int texture;
+};
 SphereMesh generateSphereTextured(float radius, int sectorCount, int stackCount);
 
 //Saturn ring

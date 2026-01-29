@@ -18,6 +18,8 @@
 
 // ------------------------------- GLOBAL VARIABLES -------------------------------
 
+int state = 0;
+
 // --- ALIEN STATE ---
 bool mercuryCaught = false;
 bool venusCaught = false;
@@ -30,15 +32,15 @@ bool plutoCaught = false;
 
 //---PLANETS ---
 
-struct Planet {
-    float x;
-    float scale;
-    unsigned int texture;
-};
-
 unsigned sunTexture, mercuryTexture, venusTexture, earthTexture,
 	marsTexture, jupiterTexture, saturnTexture,
 	uranusTexture, neptuneTexture, plutoTexture,saturnRingTexture;
+
+//Planets-skies
+
+unsigned mercurySkyTexture, venusSkyTexture, marsSkyTexture,
+	jupiterSkyTexture, saturnSkyTexture,
+	uranusSkyTexture, neptuneSkyTexture, plutoSkyTexture;
 
 
 // ------------------------------- HELPER FUNCTIONS -------------------------------
@@ -154,6 +156,17 @@ int main() {
     preprocessTexture(plutoTexture, "Resources/2k_ceres_fictional.jpg");
     preprocessTexture(saturnRingTexture, "Resources/2k_saturn_ring_alpha.png");
 
+    //planet sky textures
+
+    preprocessTexture(mercurySkyTexture, "Resources/mercury_sky.png");
+    preprocessTexture(venusSkyTexture, "Resources/venus_sky.png");
+    preprocessTexture(marsSkyTexture, "Resources/mars_sky.png");
+    preprocessTexture(jupiterSkyTexture, "Resources/jupiter_sky.png");
+    preprocessTexture(saturnSkyTexture, "Resources/saturn_sky.png");
+    preprocessTexture(uranusSkyTexture, "Resources/uranus_sky.png");
+    preprocessTexture(neptuneSkyTexture, "Resources/neptune_sky.png");
+    preprocessTexture(plutoSkyTexture, "Resources/pluto_sky.png");
+
     float scaleFactor = 1.0f;
     float distanceFactor = 1.0f;
 
@@ -234,7 +247,7 @@ int main() {
         lastTime = currentTime;
 
         //input
-        processInput(window, deltaTime, distanceFactor);
+        processInput(window, deltaTime, distanceFactor, planets,state);
 
         /////////////////////////////////
         glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
@@ -249,50 +262,93 @@ int main() {
         // ---DRAW 3D---
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        switch (state) {
 
-        // Skysphere
-        drawSkySphere(skysphereShader, VAOskySphere, skysphereTexture, skySphereVec, projection, view);
+        case 0: {
+            // Skysphere
+            drawSkySphere(skysphereShader, VAOskySphere, skysphereTexture, skySphereVec, projection, view);
 
-        glm::mat4 ringModel = glm::mat4(1.0f);
-        ringModel = glm::translate(ringModel, glm::vec3(9.0f, 0.0f, 0.0f));
-        ringModel = glm::rotate(
-            ringModel,
-            glm::radians(20.0f),
-            glm::vec3(0, 0, 1)
-        );
-        ringModel = glm::scale(ringModel, glm::vec3(0.35f)); 
+            glm::mat4 ringModel = glm::mat4(1.0f);
+            ringModel = glm::translate(ringModel, glm::vec3(9.0f, 0.0f, 0.0f));
+            ringModel = glm::rotate(
+                ringModel,
+                glm::radians(20.0f),
+                glm::vec3(0, 0, 1)
+            );
+            ringModel = glm::scale(ringModel, glm::vec3(0.35f));
 
-        drawRing(
-            unifiedShader,
-            VAOsaturnRing,
-            saturnRingTexture,
-            saturnRing,
-            ringModel,
-            projection,
-            view
-        );
-
-        // Planets
-
-        for (const auto& p : planets) {
-            glm::mat4 model = glm::mat4(1.0f);
-
-            model = glm::translate(model, glm::vec3(p.x, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1, 0, 0));
-            model = glm::scale(model, glm::vec3(p.scale));
-
-            drawSphere(
+            drawRing(
                 unifiedShader,
-                VAOball,
-                p.texture,
-                ballMesh,
-                model,
+                VAOsaturnRing,
+                saturnRingTexture,
+                saturnRing,
+                ringModel,
                 projection,
                 view
             );
+
+            // Planets
+
+            for (const auto& p : planets) {
+                glm::mat4 model = glm::mat4(1.0f);
+
+                model = glm::translate(model, glm::vec3(p.x, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1, 0, 0));
+                model = glm::scale(model, glm::vec3(p.scale));
+
+                drawSphere(
+                    unifiedShader,
+                    VAOball,
+                    p.texture,
+                    ballMesh,
+                    model,
+                    projection,
+                    view
+                );
+            }
+            break;
+        }
+        case 1: {
+            // Skysphere
+            drawSkySphere(skysphereShader, VAOskySphere, mercurySkyTexture, skySphereVec, projection, view);
+        
+            break;
+        }
+        case 2: {
+            drawSkySphere(skysphereShader, VAOskySphere, venusSkyTexture, skySphereVec, projection, view);
+            break;
+        }
+        case 3: {
+            drawSkySphere(skysphereShader, VAOskySphere, mercurySkyTexture, skySphereVec, projection, view);
+            break;
+        }
+        case 4: {
+            drawSkySphere(skysphereShader, VAOskySphere, marsSkyTexture, skySphereVec, projection, view);
+            break;
+        }
+        case 5: {
+            drawSkySphere(skysphereShader, VAOskySphere, jupiterSkyTexture, skySphereVec, projection, view);
+            break;
+        }
+        case 6: {
+            drawSkySphere(skysphereShader, VAOskySphere, saturnSkyTexture, skySphereVec, projection, view);
+            break;
+        }
+        case 7: {
+            drawSkySphere(skysphereShader, VAOskySphere, uranusSkyTexture, skySphereVec, projection, view);
+            break;
+        }
+        case 8: {
+            drawSkySphere(skysphereShader, VAOskySphere, neptuneSkyTexture, skySphereVec, projection, view);
+            break;
+        }
+        case 9: {
+            drawSkySphere(skysphereShader, VAOskySphere, plutoSkyTexture, skySphereVec, projection, view);
+            break;
         }
 
 
+        }
 
          // ---DRAW 2D---
         glDepthMask(GL_FALSE); 

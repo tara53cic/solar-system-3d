@@ -1,6 +1,8 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include "../Header/Collision.h"
+#include <vector>
+#include "../Header/Vertices.h"
 
 #pragma once
 #include <GLFW/glfw3.h>
@@ -24,6 +26,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-void processInput(GLFWwindow* window, float deltaTime, float distanceFactor);
+void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, const std::vector<Planet>& planets, int& state);
 
 #pragma once

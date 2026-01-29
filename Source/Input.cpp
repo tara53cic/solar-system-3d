@@ -5,6 +5,8 @@
 #include <iostream>
 
 // Globals
+const float PLANET_INTERACT_DISTANCE = 0.5f;
+
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -85,7 +87,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
-void processInput(GLFWwindow* window, float deltaTime, float distanceFactor) {
+void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, const std::vector<Planet>& planets, int& state) {
     // ESC za zatvaranje prozora
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
@@ -93,6 +95,14 @@ void processInput(GLFWwindow* window, float deltaTime, float distanceFactor) {
     // brzina kamere
     float cameraSpeedSim = 1.0f; 
     float frameDistance = 0.0f;
+
+    //jesmo pritisnuli ENTER?
+    static bool enterPressedLastFrame = false;
+    bool enterPressedNow = glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS;
+
+    //jesmo pritisnuli Q
+    static bool QPressedLastFrame = false;
+    bool QPressedNow = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
 
     //WASD + SPACE + SHIFT za kretanje kamere
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -111,4 +121,34 @@ void processInput(GLFWwindow* window, float deltaTime, float distanceFactor) {
     frameDistance = glm::length(cameraPos - lastCameraPos);
     simDistanceTravelled += frameDistance;
     lastCameraPos = cameraPos;
+
+    if (enterPressedNow && !enterPressedLastFrame) {
+
+        for (size_t i = 0; i < planets.size(); i++) {
+            glm::vec3 planetPos(planets[i].x, 0.0f, 0.0f);
+
+            float distanceToPlanet = glm::length(cameraPos - planetPos);
+
+            if (distanceToPlanet <= PLANET_INTERACT_DISTANCE) {
+                state = static_cast<int>(i);
+
+                std::cout << "[STATE] Changed to " << state
+                    << " (near planet " << i << ")\n";
+
+                break; // only one planet at a time
+            }
+        }
+    }
+
+    if (state!=0 && QPressedNow && !QPressedLastFrame) {
+
+
+                state = static_cast<int>(0);
+
+                std::cout << "[STATE] Changed to 0" << state
+                    << "\n";
+
+    }
+
+
 }
