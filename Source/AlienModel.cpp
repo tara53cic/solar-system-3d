@@ -8,12 +8,11 @@
 
 #include <iostream>
 
-// Use a common Vertex struct that includes Color
 struct ModelVertex {
     glm::vec3 pos;
     glm::vec3 normal;
     glm::vec2 uv;
-    glm::vec4 color; // Added for vertex colors
+    glm::vec4 color; 
 };
 
 GLuint AlienModel::loadTextureFromFile(const std::string& path) {
@@ -89,7 +88,7 @@ bool AlienModel::load(const std::string& path) {
         path,
         aiProcess_Triangulate |
         aiProcess_GenNormals |
-        aiProcess_FlipUVs // This handles the Y-axis flip for OpenGL automatically
+        aiProcess_FlipUVs 
     );
 
     if (!scene || !scene->HasMeshes()) {
@@ -111,11 +110,9 @@ bool AlienModel::load(const std::string& path) {
             v.pos = { m->mVertices[i].x, m->mVertices[i].y, m->mVertices[i].z };
             v.normal = { m->mNormals[i].x, m->mNormals[i].y, m->mNormals[i].z };
 
-            // UVs: removed the manual "1.0f - y" because aiProcess_FlipUVs already did it.
             v.uv = (m->mTextureCoords[0]) ? glm::vec2(m->mTextureCoords[0][i].x, m->mTextureCoords[0][i].y)
                 : glm::vec2(0.0f, 0.0f);
 
-            // COLOR: Extract vertex color if it exists, otherwise default to white
             if (m->HasVertexColors(0)) {
                 v.color = glm::vec4(m->mColors[0][i].r, m->mColors[0][i].g, m->mColors[0][i].b, m->mColors[0][i].a);
             }

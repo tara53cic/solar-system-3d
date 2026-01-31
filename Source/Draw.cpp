@@ -170,34 +170,25 @@ void drawAlien(unsigned int alienShader, AlienModel& alien, const glm::mat4& mod
     glUseProgram(alienShader);
     float time = (float)glfwGetTime();
 
-    // 1. Define the Speed and Angle
+    // animacija...
     float orbitSpeed = 0.8f;
-    float angle = time * orbitSpeed; // This angle is shared by both movements
+    float angle = time * orbitSpeed; 
     float radius = 8.0f;
 
-    // 2. Orbit Math (relative to camera)
+
     float orbitX = cos(angle) * radius;
     float orbitZ = sin(angle) * radius;
     float bobbing = sin(time * 2.0f) * 0.5f;
 
-    // 3. Build the World Matrix
-    // Start with identity
+
     glm::mat4 animatedModel = glm::mat4(1.0f);
 
-    // A. Move to the orbit position relative to the camera
     animatedModel = glm::translate(animatedModel, cameraPos + glm::vec3(orbitX, bobbing, orbitZ));
-
-    // B. Self-Rotation (Synced to the orbit)
-    // We use the same 'angle' variable. 
-    // Note: You might need to adjust the axis (0,0,1) or (0,1,0) depending on 
-    // your GLB's original orientation, but usually it's Y-up (0,1,0).
-    // Because you tilted the alien -90 on X in 'model', we rotate it HERE first.
     animatedModel = glm::rotate(animatedModel, -angle, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    // C. Apply the Base Pose (Scale and Tilt from main)
+    // originalni model transf
     animatedModel = animatedModel * model;
 
-    // 4. Send to Shader
     glUniformMatrix4fv(glGetUniformLocation(alienShader, "model"), 1, GL_FALSE, glm::value_ptr(animatedModel));
     glUniformMatrix4fv(glGetUniformLocation(alienShader, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(alienShader, "projection"), 1, GL_FALSE, glm::value_ptr(projection));

@@ -2,14 +2,14 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aUV;
-layout (location = 3) in vec4 aColor; // New attribute
+layout (location = 3) in vec4 aColor;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
 out vec2 TexCoord;
-out vec4 vColor; // Output to fragment shader
+out vec4 vColor;
 
 void main() {
     TexCoord = aUV;
