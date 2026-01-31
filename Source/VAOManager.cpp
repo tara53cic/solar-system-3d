@@ -34,7 +34,7 @@ void formVAOs(
     // Neptune icon
     float* verticesNeptuneIcon, size_t neptuneIconSize, unsigned int& VAOneptuneIcon,
 
-    float* verticesSkySphere, size_t skySphereSize, unsigned int& VAOskySphere,
+    SphereMesh skySphereMesh, unsigned int& VAOskySphere,
 
     SphereMesh ballMesh, unsigned int& VAOball,
 
@@ -207,18 +207,44 @@ void formVAOs(
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    //-------------------SkySphere--------------------
-    unsigned VBOskySphere;
+    // -------------------- Sky Sphere --------------------
+    unsigned int VBOsky, EBOsky;
     glGenVertexArrays(1, &VAOskySphere);
-    glGenBuffers(1, &VBOskySphere);
+    glGenBuffers(1, &VBOsky);
+    glGenBuffers(1, &EBOsky);
 
     glBindVertexArray(VAOskySphere);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOskySphere);
-    glBufferData(GL_ARRAY_BUFFER, skySphereSize, verticesSkySphere, GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ARRAY_BUFFER, VBOsky);
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        skySphereMesh.vertices.size() * sizeof(float),
+        skySphereMesh.vertices.data(),
+        GL_STATIC_DRAW
+    );
+
+    // Position
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+    // Color (unused but harmless)
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    // UV (unused but harmless)
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(7 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOsky);
+    glBufferData(
+        GL_ELEMENT_ARRAY_BUFFER,
+        skySphereMesh.indices.size() * sizeof(unsigned int),
+        skySphereMesh.indices.data(),
+        GL_STATIC_DRAW
+    );
+
     glBindVertexArray(0);
+
 
 
     // -------------------- Sphere --------------------

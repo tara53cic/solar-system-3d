@@ -191,10 +191,8 @@ int main() {
     float* ballVertices = ballMesh.vertices.data();
     size_t ballSize = ballMesh.vertices.size() * sizeof(float);
 
-    //SKY SPHERE
-    std::vector<float> skySphereVec = generateSphere(1.0f, 50, 50);
-    float* skySphereVertices = skySphereVec.data();
-    size_t skySphereSize = skySphereVec.size() * sizeof(float);
+    // SKY SPHERE (indexed, textured sphere)
+    SphereMesh skySphereMesh = generateSphereTextured(1.0f, 32, 16);
 
     //RING
     RingMesh saturnRing = generateRing(1.2f, 2.2f, 128);
@@ -228,7 +226,7 @@ int main() {
         verticesSaturnIcon, sizeof(verticesSaturnIcon), VAOsaturnIcon,
         verticesUranusIcon, sizeof(verticesUranusIcon), VAOuranusIcon,
         verticesNeptuneIcon, sizeof(verticesNeptuneIcon), VAOneptuneIcon,
-        skySphereVertices, skySphereSize, VAOskySphere,
+        skySphereMesh, VAOskySphere,
         ballMesh, VAOball,
         saturnRing, VAOsaturnRing
     );
@@ -266,7 +264,15 @@ int main() {
 
         case 0: {
             // Skysphere
-            drawSkySphere(skysphereShader, VAOskySphere, skysphereTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                skysphereTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
+
 
             glm::mat4 ringModel = glm::mat4(1.0f);
             ringModel = glm::translate(ringModel, glm::vec3(9.0f, 0.0f, 0.0f));
@@ -310,40 +316,103 @@ int main() {
         }
         case 1: {
             // Skysphere
-            drawSkySphere(skysphereShader, VAOskySphere, mercurySkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                mercurySkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
         
             break;
         }
         case 2: {
-            drawSkySphere(skysphereShader, VAOskySphere, venusSkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                venusSkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
             break;
         }
         case 3: {
-            drawSkySphere(skysphereShader, VAOskySphere, mercurySkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                mercurySkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
             break;
         }
         case 4: {
-            drawSkySphere(skysphereShader, VAOskySphere, marsSkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                marsSkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
             break;
         }
         case 5: {
-            drawSkySphere(skysphereShader, VAOskySphere, jupiterSkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                jupiterSkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
             break;
         }
         case 6: {
-            drawSkySphere(skysphereShader, VAOskySphere, saturnSkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                saturnSkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
             break;
         }
         case 7: {
-            drawSkySphere(skysphereShader, VAOskySphere, uranusSkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                uranusSkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
             break;
         }
         case 8: {
-            drawSkySphere(skysphereShader, VAOskySphere, neptuneSkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                neptuneSkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
             break;
         }
         case 9: {
-            drawSkySphere(skysphereShader, VAOskySphere, plutoSkyTexture, skySphereVec, projection, view);
+            drawSkySphere(
+                skysphereShader,
+                VAOskySphere,
+                plutoSkyTexture,
+                skySphereMesh,
+                projection,
+                view
+            );
             break;
         }
 
