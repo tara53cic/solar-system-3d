@@ -55,7 +55,14 @@ void drawHelp(unsigned int backgroundShader, unsigned int VAOrect, unsigned int 
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
-void drawSkySphere(unsigned int skysphereShader, unsigned int VAOskySphere, unsigned int skysphereTexture, std::vector<float> skySphereVec, glm::mat4 projection, glm::mat4 view) {
+void drawSkySphere(
+    unsigned int skysphereShader,
+    unsigned int VAOskySphere,
+    unsigned int skysphereTexture,
+    const SphereMesh& skySphereMesh,
+    glm::mat4 projection,
+    glm::mat4 view
+) {
 
     glDepthMask(GL_FALSE);
     glDepthFunc(GL_LEQUAL);
@@ -70,7 +77,13 @@ void drawSkySphere(unsigned int skysphereShader, unsigned int VAOskySphere, unsi
     glBindTexture(GL_TEXTURE_2D, skysphereTexture);
 
     glBindVertexArray(VAOskySphere);
-    glDrawArrays(GL_TRIANGLES, 0, (int)(skySphereVec.size() / 3));
+    glDrawElements(
+        GL_TRIANGLES,
+        skySphereMesh.indices.size(),
+        GL_UNSIGNED_INT,
+        0
+    );
+
 
     glDepthMask(GL_TRUE);
     glDepthFunc(GL_LESS);

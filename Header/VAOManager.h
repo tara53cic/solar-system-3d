@@ -36,7 +36,7 @@ void formVAOs(
     float* verticesNeptuneIcon, size_t neptuneIconSize, unsigned int& VAOneptuneIcon,
 
     //Pozadina, sfera
-    float* verticesSkySphere, size_t skySphereSize, unsigned int& VAOskySphere,
+    SphereMesh skySphereMesh, unsigned int& VAOskySphere,
 
     //Planetarna sfera
     SphereMesh ballMesh, unsigned int& VAOball,
