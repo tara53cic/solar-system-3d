@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Vertices.h"
+#include "AlienModel.h"
 
 
 
@@ -39,4 +40,6 @@ void drawRing(
     const glm::mat4& projection,
     const glm::mat4& view
 );
+void drawAlien(unsigned int alienShader, AlienModel& alien, const glm::mat4& model,
+    const glm::mat4& projection, const glm::mat4& view, glm::vec3 cameraPos);
 #pragma once

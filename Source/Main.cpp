@@ -9,6 +9,7 @@
 #include "../Header/Draw.h"
 #include "../Header/Shaders.h"
 #include "../Header/stb_image.h"
+#include "../Header/AlienModel.h"
 
 #include <iostream>
 #include <vector>
@@ -200,10 +201,21 @@ int main() {
     float* ringVertices = saturnRing.vertices.data();
     size_t ringSize = saturnRing.vertices.size() * sizeof(float);
 
+    //Aliens
+    AlienModel alien, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8;
+    alien1.load("Resources/aliens/alien1.glb");
+    alien2.load("Resources/aliens/alien2.glb");
+    alien3.load("Resources/aliens/alien3.glb");
+    alien4.load("Resources/aliens/alien9.glb");
+    alien5.load("Resources/aliens/alien5.glb");
+    alien6.load("Resources/aliens/alien6.glb");
+    alien7.load("Resources/aliens/alien7.glb");
+    alien8.load("Resources/aliens/alien12.glb");
+
 
     // ---------------- SHADERS ----------------
-    unsigned nametagShader, alienIconShader, distanceBgShader, unifiedShader, skysphereShader;
-    loadAllShaders(nametagShader, alienIconShader, distanceBgShader, skysphereShader,unifiedShader);
+    unsigned nametagShader, alienIconShader, distanceBgShader, unifiedShader, skysphereShader, alienShader;
+    loadAllShaders(nametagShader, alienIconShader, distanceBgShader, skysphereShader,unifiedShader, alienShader);
 
 
     // ---------------- VAOs ----------------
@@ -315,16 +327,14 @@ int main() {
             break;
         }
         case 1: {
-            // Skysphere
-            drawSkySphere(
-                skysphereShader,
-                VAOskySphere,
-                mercurySkyTexture,
-                skySphereMesh,
-                projection,
-                view
-            );
-        
+
+            drawSkySphere(skysphereShader, VAOskySphere, mercurySkyTexture, skySphereMesh, projection, view);
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(0.4f));
+
+            drawAlien(alienShader, alien1, model, projection, view, cameraPos);
             break;
         }
         case 2: {
@@ -335,6 +345,19 @@ int main() {
                 skySphereMesh,
                 projection,
                 view
+            );
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(0.4f));
+
+            drawAlien(
+                alienShader,
+                alien2,
+                model,
+                projection,
+                view, cameraPos
             );
             break;
         }
@@ -347,6 +370,22 @@ int main() {
                 projection,
                 view
             );
+            //set alien model
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, cameraPos + glm::vec3(0.0f, -0.5f, -2.5f));
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-35.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+            model = glm::scale(model, glm::vec3(0.4f));
+
+            drawAlien(
+                alienShader,
+                alien3,
+                model,
+                projection,
+                view, cameraPos
+            );
             break;
         }
         case 4: {
@@ -357,6 +396,20 @@ int main() {
                 skySphereMesh,
                 projection,
                 view
+            );
+            //set alien model
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(0.4f));
+
+            drawAlien(
+                alienShader,
+                alien3,
+                model,
+                projection,
+                view, cameraPos
             );
             break;
         }
@@ -369,6 +422,20 @@ int main() {
                 projection,
                 view
             );
+            //set alien model
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(0.4f));
+
+            drawAlien(
+                alienShader,
+                alien4,
+                model,
+                projection,
+                view, cameraPos
+            );
             break;
         }
         case 6: {
@@ -379,6 +446,20 @@ int main() {
                 skySphereMesh,
                 projection,
                 view
+            );
+            //set alien model
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(0.4f));
+
+            drawAlien(
+                alienShader,
+                alien5,
+                model,
+                projection,
+                view, cameraPos
             );
             break;
         }
@@ -391,6 +472,20 @@ int main() {
                 projection,
                 view
             );
+            //set alien model
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(0.4f));
+
+            drawAlien(
+                alienShader,
+                alien6,
+                model,
+                projection,
+                view, cameraPos
+            );
             break;
         }
         case 8: {
@@ -401,6 +496,20 @@ int main() {
                 skySphereMesh,
                 projection,
                 view
+            );
+            //set alien model
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(1.2f));
+
+            drawAlien(
+                alienShader,
+                alien7,
+                model,
+                projection,
+                view, cameraPos
             );
             break;
         }
@@ -413,9 +522,22 @@ int main() {
                 projection,
                 view
             );
+            //set alien model
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, glm::vec3(0.4f));
+
+            drawAlien(
+                alienShader,
+                alien8,
+                model,
+                projection,
+                view, cameraPos
+            );
             break;
         }
-
 
         }
 

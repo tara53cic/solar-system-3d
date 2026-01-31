@@ -7,7 +7,8 @@ unsigned int loadAllShaders(
     unsigned int& distanceBackgroundShader,
     unsigned int& alienIconShader,
     unsigned int& skySphereShader,
-    unsigned int& sphereShader)
+    unsigned int& sphereShader,
+    unsigned int& alienShader)
 {
 
 
@@ -29,6 +30,8 @@ unsigned int loadAllShaders(
         "Shaders/skysphere.vert",
         "Shaders/skysphere.frag"
     );
+
+    alienShader = createShader("Shaders/alien.vert", "Shaders/alien.frag");
 
 
     return 1;

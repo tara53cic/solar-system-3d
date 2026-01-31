@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AlienModel.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Draw.cpp" />
     <ClCompile Include="Source\Input.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Source\Vertices.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\AlienModel.h" />
     <ClInclude Include="Header\Collision.h" />
     <ClInclude Include="Header\Draw.h" />
     <ClInclude Include="Header\Input.h" />
@@ -153,6 +155,8 @@
     <None Include="Resources\starmap_2020_4k_gal.hdr" />
     <None Include="Shaders\3dshader.frag" />
     <None Include="Shaders\3dshader.vert" />
+    <None Include="Shaders\alien.frag" />
+    <None Include="Shaders\alien.vert" />
     <None Include="Shaders\rect.frag" />
     <None Include="Shaders\rect.vert" />
     <None Include="Shaders\skysphere.frag" />

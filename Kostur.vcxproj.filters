@@ -42,6 +42,9 @@
     <ClCompile Include="Source\Collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AlienModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\stb_image.h">
@@ -71,6 +74,9 @@
     <ClInclude Include="Header\Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header\AlienModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -97,6 +103,12 @@
     </None>
     <None Include="Resources\starmap_2020_4k_gal.hdr">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\alien.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\alien.frag">
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

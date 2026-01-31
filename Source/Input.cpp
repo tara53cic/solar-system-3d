@@ -5,7 +5,8 @@
 #include <iostream>
 
 // Globals
-const float PLANET_INTERACT_DISTANCE = 0.5f;
+const float BASE_INTERACT_DISTANCE = 0.3f;
+const float INTERACT_RADIUS_MULT = 2.0f; 
 
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -105,39 +106,51 @@ void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, con
     bool QPressedNow = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
 
     //WASD + SPACE + SHIFT za kretanje kamere
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeedSim * cameraFront * deltaTime;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeedSim * cameraFront * deltaTime;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeedSim * deltaTime;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeedSim * deltaTime;
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        cameraPos += cameraUp * cameraSpeedSim * deltaTime;
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        cameraPos -= cameraUp * cameraSpeedSim * deltaTime;
+    if (state == 0) {
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            cameraPos += cameraSpeedSim * cameraFront * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            cameraPos -= cameraSpeedSim * cameraFront * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeedSim * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeedSim * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+            cameraPos += cameraUp * cameraSpeedSim * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+            cameraPos -= cameraUp * cameraSpeedSim * deltaTime;
 
-    frameDistance = glm::length(cameraPos - lastCameraPos);
-    simDistanceTravelled += frameDistance;
-    lastCameraPos = cameraPos;
+        // Update distance only when moving
+        frameDistance = glm::length(cameraPos - lastCameraPos);
+        simDistanceTravelled += frameDistance;
+        lastCameraPos = cameraPos;
+    }
 
     if (enterPressedNow && !enterPressedLastFrame) {
 
-        for (size_t i = 0; i < planets.size(); i++) {
+        for (size_t i = 1; i < planets.size(); i++) {
+
             glm::vec3 planetPos(planets[i].x, 0.0f, 0.0f);
 
             float distanceToPlanet = glm::length(cameraPos - planetPos);
 
-            if (distanceToPlanet <= PLANET_INTERACT_DISTANCE) {
+            float planetRadius = planets[i].scale;
+
+            float interactDistance =
+                BASE_INTERACT_DISTANCE + planetRadius * INTERACT_RADIUS_MULT;
+
+            if (distanceToPlanet <= interactDistance) {
+
                 state = static_cast<int>(i);
 
                 std::cout << "[STATE] Changed to " << state
-                    << " (near planet " << i << ")\n";
+                    << " (planet " << i
+                    << ", interactDist=" << interactDistance << ")\n";
 
-                break; // only one planet at a time
+                break;
             }
         }
+
     }
 
     if (state!=0 && QPressedNow && !QPressedLastFrame) {
