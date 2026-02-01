@@ -127,7 +127,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AlienModel.cpp" />
-    <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Draw.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -139,7 +138,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\AlienModel.h" />
-    <ClInclude Include="Header\Collision.h" />
     <ClInclude Include="Header\Draw.h" />
     <ClInclude Include="Header\Input.h" />
     <ClInclude Include="Header\Shaders.h" />

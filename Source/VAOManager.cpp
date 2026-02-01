@@ -38,7 +38,8 @@ void formVAOs(
 
     SphereMesh ballMesh, unsigned int& VAOball,
 
-    RingMesh ringMesh, unsigned int& VAOring
+    RingMesh ringMesh, unsigned int& VAOring,
+    float* verticesCrosshair, size_t verticesCrosshairSize, unsigned int& VAOcrosshair
 
 ) {
 
@@ -303,6 +304,23 @@ void formVAOs(
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, ringMesh.indices.size() * sizeof(unsigned int), ringMesh.indices.data(), GL_STATIC_DRAW);
 
     glBindVertexArray(0);
+
+    // -------------------- Crosshair --------------------
+    unsigned int VBOcrosshair;
+    glGenVertexArrays(1, &VAOcrosshair);
+    glGenBuffers(1, &VBOcrosshair);
+
+    glBindVertexArray(VAOcrosshair);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOcrosshair);
+    glBufferData(GL_ARRAY_BUFFER, verticesCrosshairSize, verticesCrosshair, GL_STATIC_DRAW);
+
+    // Atribut 0 (pozicija):
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Atribut 1 (boja):
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
 
 

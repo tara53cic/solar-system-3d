@@ -212,6 +212,10 @@ int main() {
     alien7.load("Resources/aliens/alien7.glb");
     alien8.load("Resources/aliens/alien12.glb");
 
+    //crosshair
+    float aspect = (float)mode->width / (float)mode->height;
+    std::vector<float> crosshairData = generateCrosshairVertices(aspect);
+
 
     // ---------------- SHADERS ----------------
     unsigned nametagShader, alienIconShader, distanceBgShader, unifiedShader, skysphereShader, alienShader;
@@ -225,6 +229,7 @@ int main() {
     unsigned VAOball;
     unsigned VAOskySphere;
     unsigned VAOsaturnRing;
+    unsigned VAOcrosshair;
 
 
     formVAOs(
@@ -240,7 +245,8 @@ int main() {
         verticesNeptuneIcon, sizeof(verticesNeptuneIcon), VAOneptuneIcon,
         skySphereMesh, VAOskySphere,
         ballMesh, VAOball,
-        saturnRing, VAOsaturnRing
+        saturnRing, VAOsaturnRing,
+        crosshairData.data(), crosshairData.size() * sizeof(float), VAOcrosshair
     );
 
 
@@ -567,6 +573,19 @@ int main() {
         drawAlienIcon(alienIconShader, VAOuranusIcon, uranusCaught ? uranusIconCaught : uranusIconFree);
         drawAlienIcon(alienIconShader, VAOneptuneIcon, neptuneCaught ? neptuneIconCaught : neptuneIconFree);
         drawAlienIcon(alienIconShader, VAOplutoIcon, plutoCaught ? plutoIconCaught : plutoIconFree);
+
+        //kursor
+        // 
+        // 1. Use a simple shader (like your alienIconShader or nametagShader)
+        glUseProgram(distanceBgShader);
+
+        // 2. Set the color (if your shader supports a color uniform, e.g., for a white crosshair)
+        glUniform3f(glGetUniformLocation(distanceBgShader, "uColor"), 1.0f, 1.0f, 1.0f);
+
+        // 3. Bind and Draw
+        glBindVertexArray(VAOcrosshair);
+        glDrawArrays(GL_TRIANGLES, 0, 12); 
+
 
         glDepthMask(GL_TRUE); 
 

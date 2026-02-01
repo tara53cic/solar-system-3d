@@ -1,6 +1,5 @@
 #pragma once
 #include <GLFW/glfw3.h>
-#include "../Header/Collision.h"
 #include <vector>
 #include "../Header/Vertices.h"
 

@@ -86,6 +86,32 @@ float verticesMercuryIcon[] = {
 };
 //
 
+std::vector<float> generateCrosshairVertices(float aspect) {
+	float cSize = 0.02f;
+	float thick = 0.003f;
+
+	float cSizeX = cSize / aspect;
+	float thickX = thick / aspect;
+
+	return {
+		// Vertical Rectangle
+		-thickX,  cSize,  0.0f, 1.0f,
+		-thickX, -cSize,  0.0f, 0.0f,
+		 thickX, -cSize,  1.0f, 0.0f,
+		-thickX,  cSize,  0.0f, 1.0f,
+		 thickX, -cSize,  1.0f, 0.0f,
+		 thickX,  cSize,  1.0f, 1.0f,
+
+		 // Horizontal Rectangle
+		 -cSizeX,  thick,  0.0f, 1.0f,
+		 -cSizeX, -thick,  0.0f, 0.0f,
+		  cSizeX, -thick,  1.0f, 0.0f,
+		 -cSizeX,  thick,  0.0f, 1.0f,
+		  cSizeX, -thick,  1.0f, 0.0f,
+		  cSizeX,  thick,  1.0f, 1.0f
+	};
+}
+
 
 std::vector<float> generateSphere(float radius, int sectorCount, int stackCount) {
 	std::vector<float> vertices;
@@ -204,6 +230,7 @@ RingMesh generateRing(
 
 	return mesh;
 }
+
 
 
 

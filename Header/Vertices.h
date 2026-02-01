@@ -24,6 +24,9 @@ extern float verticesUranusIcon[16];
 extern float verticesNeptuneIcon[16];
 extern float verticesPlutoIcon[16];
 
+//middle screen cross
+std::vector<float> generateCrosshairVertices(float aspect);
+
 
 // Sky sphere
 std::vector<float> generateSphere(float radius = 0.2f, int sectorCount = 20, int stackCount = 20);

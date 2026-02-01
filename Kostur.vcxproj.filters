@@ -39,9 +39,6 @@
     <ClCompile Include="Source\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\AlienModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,9 +66,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header\AlienModel.h">
