@@ -43,6 +43,8 @@ unsigned mercurySkyTexture, venusSkyTexture, marsSkyTexture,
 	jupiterSkyTexture, saturnSkyTexture,
 	uranusSkyTexture, neptuneSkyTexture, plutoSkyTexture;
 
+unsigned windowTexture, dashboardTexture, distanceCoverTexture;
+
 
 // ------------------------------- HELPER FUNCTIONS -------------------------------
 void preprocessTexture(unsigned& texture, const char* filepath) {
@@ -142,8 +144,6 @@ int main() {
 
     unsigned skysphereTexture;
     preprocessHDRTexture(skysphereTexture,"Resources/starmap_2020_4k_gal.hdr");
-    unsigned planetTexture;
-    preprocessTexture(planetTexture, "Resources/2k_ceres_fictional.jpg");
 
     preprocessTexture(sunTexture, "Resources/2k_sun.jpg");
     preprocessTexture(mercuryTexture, "Resources/2k_mercury.jpg");
@@ -167,6 +167,10 @@ int main() {
     preprocessTexture(uranusSkyTexture, "Resources/uranus_sky.png");
     preprocessTexture(neptuneSkyTexture, "Resources/neptune_sky.png");
     preprocessTexture(plutoSkyTexture, "Resources/pluto_sky.png");
+
+    preprocessTexture(windowTexture, "Resources/Glass-Texture-Transparent.png");
+    preprocessTexture(dashboardTexture, "Resources/dashboard.png");
+    preprocessTexture(distanceCoverTexture, "Resources/distancecover.png");
 
     float scaleFactor = 1.0f;
     float distanceFactor = 1.0f;
@@ -206,49 +210,61 @@ int main() {
     alien1.load("Resources/aliens/alien1.glb");
     alien2.load("Resources/aliens/alien2.glb");
     alien3.load("Resources/aliens/alien3.glb");
-    alien4.load("Resources/aliens/alien9.glb");
+    alien4.load("Resources/aliens/alien7.glb");
     alien5.load("Resources/aliens/alien5.glb");
     alien6.load("Resources/aliens/alien6.glb");
-    alien7.load("Resources/aliens/alien7.glb");
+    alien7.load("Resources/aliens/alien9.glb");
     alien8.load("Resources/aliens/alien12.glb");
 
     //crosshair
     float aspect = (float)mode->width / (float)mode->height;
     std::vector<float> crosshairData = generateCrosshairVertices(aspect);
 
+    //overlay video
+
+    std::vector<unsigned int> videoFrames;
+
+    // Load the frames
+    int totalFrames = 607; 
+    videoFrames.reserve(totalFrames); 
+
+    for (int i = 0; i < totalFrames; i++) {
+        char path[128];
+        sprintf_s(path, "Resources/Video/frame_%04d.png", i);
+
+        unsigned int textureID;
+        preprocessTexture(textureID, path);
+        videoFrames.push_back(textureID);
+    }
+
 
     // ---------------- SHADERS ----------------
-    unsigned nametagShader, alienIconShader, distanceBgShader, unifiedShader, skysphereShader, alienShader;
-    loadAllShaders(nametagShader, alienIconShader, distanceBgShader, skysphereShader,unifiedShader, alienShader);
+    unsigned nametagShader, distanceBgShader, unifiedShader, skysphereShader, alienShader, videoShader, glassShader;
+    loadAllShaders(nametagShader, distanceBgShader, skysphereShader,unifiedShader, alienShader, videoShader,glassShader);
 
 
     // ---------------- VAOs ----------------
     unsigned VAOnametag, VAOdistanceBg;
-    unsigned VAOmercuryIcon, VAOvenusIcon, VAOmarsIcon, VAOjupiterIcon;
-    unsigned VAOsaturnIcon, VAOuranusIcon, VAOneptuneIcon, VAOplutoIcon;
     unsigned VAOball;
     unsigned VAOskySphere;
     unsigned VAOsaturnRing;
     unsigned VAOcrosshair;
+    unsigned videoVAO;
 
 
     formVAOs(
         verticesNametag, sizeof(verticesNametag), VAOnametag,
         verticesTopLeftRect, sizeof(verticesTopLeftRect), VAOdistanceBg,
-        verticesPlutoIcon, sizeof(verticesPlutoIcon), VAOplutoIcon,
-        verticesMercuryIcon, sizeof(verticesMercuryIcon), VAOmercuryIcon,
-        verticesVenusIcon, sizeof(verticesVenusIcon), VAOvenusIcon,
-        verticesMarsIcon, sizeof(verticesMarsIcon), VAOmarsIcon,
-        verticesJupiterIcon, sizeof(verticesJupiterIcon), VAOjupiterIcon,
-        verticesSaturnIcon, sizeof(verticesSaturnIcon), VAOsaturnIcon,
-        verticesUranusIcon, sizeof(verticesUranusIcon), VAOuranusIcon,
-        verticesNeptuneIcon, sizeof(verticesNeptuneIcon), VAOneptuneIcon,
         skySphereMesh, VAOskySphere,
         ballMesh, VAOball,
         saturnRing, VAOsaturnRing,
-        crosshairData.data(), crosshairData.size() * sizeof(float), VAOcrosshair
+        crosshairData.data(), crosshairData.size() * sizeof(float), VAOcrosshair,
+        videoVertices, videoVAO
     );
-
+    // setup za video
+    float frameTimer = 0.0f;
+    int currentFrame = 0;
+    float frameDuration = 1.0f / 24.0f; // 24 FPS
 
 
 
@@ -257,10 +273,18 @@ int main() {
 
     while (!glfwWindowShouldClose(window)) {
 
+  
         //frame limiter
         double currentTime = glfwGetTime();
         float deltaTime = static_cast<float>(currentTime - lastTime);
         lastTime = currentTime;
+
+        //frame progress update za video
+        frameTimer += deltaTime;
+        if (frameTimer >= frameDuration) {
+            currentFrame = (currentFrame + 1) % videoFrames.size();
+            frameTimer = 0.0f;
+        }
 
         //input
         processInput(window, deltaTime, distanceFactor, planets,state);
@@ -335,12 +359,13 @@ int main() {
         case 1: {
 
             drawSkySphere(skysphereShader, VAOskySphere, mercurySkyTexture, skySphereMesh, projection, view);
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(0.4f));
-
-            drawAlien(alienShader, alien1, model, projection, view, cameraPos);
+            if (!mercuryCaught) {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, glm::vec3(0.4f));
+                drawAlien(alienShader, alien1, model, projection, view, cameraPos);
+            }
             break;
         }
         case 2: {
@@ -352,19 +377,21 @@ int main() {
                 projection,
                 view
             );
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(0.4f));
+            if (!venusCaught) {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, glm::vec3(0.4f));
 
-            drawAlien(
-                alienShader,
-                alien2,
-                model,
-                projection,
-                view, cameraPos
-            );
+                drawAlien(
+                    alienShader,
+                    alien2,
+                    model,
+                    projection,
+                    view, cameraPos
+                );
+            }
             break;
         }
         case 3: {
@@ -404,19 +431,20 @@ int main() {
                 view
             );
             //set alien model
+            if (!marsCaught) {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, glm::vec3(0.8f));
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(0.4f));
-
-            drawAlien(
-                alienShader,
-                alien3,
-                model,
-                projection,
-                view, cameraPos
-            );
+                drawAlien(
+                    alienShader,
+                    alien3,
+                    model,
+                    projection,
+                    view, cameraPos
+                );
+            }
             break;
         }
         case 5: {
@@ -429,19 +457,20 @@ int main() {
                 view
             );
             //set alien model
+            if (!jupiterCaught) {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, glm::vec3(1.2f));
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(0.4f));
-
-            drawAlien(
-                alienShader,
-                alien4,
-                model,
-                projection,
-                view, cameraPos
-            );
+                drawAlien(
+                    alienShader,
+                    alien4,
+                    model,
+                    projection,
+                    view, cameraPos
+                );
+            }
             break;
         }
         case 6: {
@@ -454,19 +483,20 @@ int main() {
                 view
             );
             //set alien model
+            if (!saturnCaught) {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, glm::vec3(0.4f));
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(0.4f));
-
-            drawAlien(
-                alienShader,
-                alien5,
-                model,
-                projection,
-                view, cameraPos
-            );
+                drawAlien(
+                    alienShader,
+                    alien5,
+                    model,
+                    projection,
+                    view, cameraPos
+                );
+            }
             break;
         }
         case 7: {
@@ -479,19 +509,20 @@ int main() {
                 view
             );
             //set alien model
+            if (!uranusCaught) {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, glm::vec3(0.4f));
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(0.4f));
-
-            drawAlien(
-                alienShader,
-                alien6,
-                model,
-                projection,
-                view, cameraPos
-            );
+                drawAlien(
+                    alienShader,
+                    alien6,
+                    model,
+                    projection,
+                    view, cameraPos
+                );
+            }
             break;
         }
         case 8: {
@@ -504,19 +535,20 @@ int main() {
                 view
             );
             //set alien model
+            if (!neptuneCaught) {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, glm::vec3(0.4f));
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(1.2f));
-
-            drawAlien(
-                alienShader,
-                alien7,
-                model,
-                projection,
-                view, cameraPos
-            );
+                drawAlien(
+                    alienShader,
+                    alien7,
+                    model,
+                    projection,
+                    view, cameraPos
+                );
+            }
             break;
         }
         case 9: {
@@ -529,19 +561,20 @@ int main() {
                 view
             );
             //set alien model
+            if (!plutoCaught) {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+                model = glm::scale(model, glm::vec3(0.4f));
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::scale(model, glm::vec3(0.4f));
-
-            drawAlien(
-                alienShader,
-                alien8,
-                model,
-                projection,
-                view, cameraPos
-            );
+                drawAlien(
+                    alienShader,
+                    alien8,
+                    model,
+                    projection,
+                    view, cameraPos
+                );
+            }
             break;
         }
 
@@ -549,43 +582,84 @@ int main() {
 
          // ---DRAW 2D---
         glDepthMask(GL_FALSE); 
+
+        //video overlay
+
+        if (state == 0) {
+
+            //staklo
+            glUseProgram(glassShader);
+            glUniform1i(glGetUniformLocation(glassShader, "glassTexture"), 0);
+            glBindTexture(GL_TEXTURE_2D, windowTexture);
+            glBindVertexArray(videoVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            //raketa video
+            glUseProgram(videoShader);
+            glUniform1i(glGetUniformLocation(videoShader, "videoTexture"), 0);
+            glBindTexture(GL_TEXTURE_2D, videoFrames[currentFrame]);
+            glBindVertexArray(videoVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        
+
+            //crew dashboard
+            glUseProgram(nametagShader);
+            glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+            glBindTexture(GL_TEXTURE_2D, dashboardTexture);
+            glBindVertexArray(videoVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            //alien icons:
+
+
+            drawAlienIcon(nametagShader, videoVAO, mercuryCaught ? mercuryIconCaught : mercuryIconFree);
+            drawAlienIcon(nametagShader, videoVAO, venusCaught ? venusIconCaught : venusIconFree);
+            drawAlienIcon(nametagShader, videoVAO, marsCaught ? marsIconCaught : marsIconFree);
+            drawAlienIcon(nametagShader, videoVAO, jupiterCaught ? jupiterIconCaught : jupiterIconFree);
+            drawAlienIcon(nametagShader, videoVAO, saturnCaught ? saturnIconCaught : saturnIconFree);
+            drawAlienIcon(nametagShader, videoVAO, uranusCaught ? uranusIconCaught : uranusIconFree);
+            drawAlienIcon(nametagShader, videoVAO, neptuneCaught ? neptuneIconCaught : neptuneIconFree);
+            drawAlienIcon(nametagShader, videoVAO, plutoCaught ? plutoIconCaught : plutoIconFree);
+
+            glUseProgram(nametagShader);
+            glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+            glBindTexture(GL_TEXTURE_2D, distanceCoverTexture);
+            glBindVertexArray(videoVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            //distanca pređena
+
+            float realSunEarthKm = 150.0e6f;
+            float simDistanceSunEarth = (planets[3].x - planets[0].x) * distanceFactor;
+            float simUnitToKm = realSunEarthKm / simDistanceSunEarth;
+            float distanceInBillionsKm = simDistanceTravelled * simUnitToKm / 1e9f;
+
+
+            char buffer[64];
+            sprintf_s(buffer, "%.2f billions of km", distanceInBillionsKm);
+
+            float textScale = 0.7f;
+            float xPos = (mode->width / 2.0f) - 53.0f;
+            float yPos = 322.0f;
+
+            textRenderer.RenderText(buffer, xPos, yPos, textScale, glm::vec3(1.0f, 1.0f, 1.0f));
+
+
+        }
+
         drawNametag(nametagShader, VAOnametag, nametagTexture);
         textRenderer.RenderText("Tara Petricic, RA 141/2022", 25.0f, 28.0f, 1.0f, glm::vec3(1.0f));
 
-        //distanca pređena
-
-        float realSunEarthKm = 150.0e6f; // 150 million km
-        float simDistanceSunEarth = (planets[3].x - planets[0].x) * distanceFactor; 
-        float simUnitToKm = realSunEarthKm / simDistanceSunEarth; 
-        float distanceInBillionsKm = simDistanceTravelled * simUnitToKm / 1e9f;
-
-
-        drawDistanceBackground(distanceBgShader, VAOdistanceBg, distanceBgTexture);
-        char buffer[64];
-        sprintf_s(buffer, "Distance: %.2f billions of km", distanceInBillionsKm);
-        textRenderer.RenderText(buffer, 25.0f, mode->height - 50.0f, 1.0f, glm::vec3(1.0f));
-
-        drawAlienIcon(alienIconShader, VAOmercuryIcon, mercuryCaught ? mercuryIconCaught : mercuryIconFree);
-        drawAlienIcon(alienIconShader, VAOvenusIcon, venusCaught ? venusIconCaught : venusIconFree);
-        drawAlienIcon(alienIconShader, VAOmarsIcon, marsCaught ? marsIconCaught : marsIconFree);
-        drawAlienIcon(alienIconShader, VAOjupiterIcon, jupiterCaught ? jupiterIconCaught : jupiterIconFree);
-        drawAlienIcon(alienIconShader, VAOsaturnIcon, saturnCaught ? saturnIconCaught : saturnIconFree);
-        drawAlienIcon(alienIconShader, VAOuranusIcon, uranusCaught ? uranusIconCaught : uranusIconFree);
-        drawAlienIcon(alienIconShader, VAOneptuneIcon, neptuneCaught ? neptuneIconCaught : neptuneIconFree);
-        drawAlienIcon(alienIconShader, VAOplutoIcon, plutoCaught ? plutoIconCaught : plutoIconFree);
+        
 
         //kursor
-        // 
-        // 1. Use a simple shader (like your alienIconShader or nametagShader)
-        glUseProgram(distanceBgShader);
 
-        // 2. Set the color (if your shader supports a color uniform, e.g., for a white crosshair)
-        glUniform3f(glGetUniformLocation(distanceBgShader, "uColor"), 1.0f, 1.0f, 1.0f);
-
-        // 3. Bind and Draw
-        glBindVertexArray(VAOcrosshair);
-        glDrawArrays(GL_TRIANGLES, 0, 12); 
-
+        if (state != 0) {
+            glUseProgram(distanceBgShader);
+            glUniform3f(glGetUniformLocation(distanceBgShader, "uColor"), 1.0f, 1.0f, 1.0f);
+            glBindVertexArray(VAOcrosshair);
+            glDrawArrays(GL_TRIANGLES, 0, 12);
+        }
 
         glDepthMask(GL_TRUE); 
 

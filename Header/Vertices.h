@@ -12,17 +12,7 @@ extern float verticesNametag[16];
 // Distance background
 extern float verticesTopLeftRect[16];
 
-
-
-//Alien icons
-extern float verticesMercuryIcon[16];
-extern float verticesVenusIcon[16];
-extern float verticesMarsIcon[16];
-extern float verticesJupiterIcon[16];
-extern float verticesSaturnIcon[16];
-extern float verticesUranusIcon[16];
-extern float verticesNeptuneIcon[16];
-extern float verticesPlutoIcon[16];
+extern float videoVertices[24];
 
 //middle screen cross
 std::vector<float> generateCrosshairVertices(float aspect);

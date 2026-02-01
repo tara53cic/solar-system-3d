@@ -25,6 +25,9 @@ glm::vec3 lastCameraPos = cameraPos;
 bool ENABLE_DEPTH_TEST = true;
 bool ENABLE_CULL_FACE = false;
 
+extern bool mercuryCaught, venusCaught, marsCaught, jupiterCaught,
+saturnCaught, uranusCaught, neptuneCaught, plutoCaught;
+
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     if (firstMouse) {
@@ -89,23 +92,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, const std::vector<Planet>& planets, int& state) {
-    // ESC za zatvaranje prozora
+    // ESC to close
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    // brzina kamere
-    float cameraSpeedSim = 1.0f; 
+    float cameraSpeedSim = 1.0f;
     float frameDistance = 0.0f;
 
-    //jesmo pritisnuli ENTER?
     static bool enterPressedLastFrame = false;
     bool enterPressedNow = glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS;
 
-    //jesmo pritisnuli Q
     static bool QPressedLastFrame = false;
     bool QPressedNow = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
 
-    //WASD + SPACE + SHIFT za kretanje kamere
+    // --- MOVEMENT (Only in State 0) ---
     if (state == 0) {
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
             cameraPos += cameraSpeedSim * cameraFront * deltaTime;
@@ -120,48 +120,75 @@ void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, con
         if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
             cameraPos -= cameraUp * cameraSpeedSim * deltaTime;
 
-        // Update distance only when moving
         frameDistance = glm::length(cameraPos - lastCameraPos);
         simDistanceTravelled += frameDistance;
         lastCameraPos = cameraPos;
     }
 
+    // --- PLANET ENTRY (ENTER) ---
     if (enterPressedNow && !enterPressedLastFrame) {
-
         for (size_t i = 1; i < planets.size(); i++) {
-
             glm::vec3 planetPos(planets[i].x, 0.0f, 0.0f);
-
             float distanceToPlanet = glm::length(cameraPos - planetPos);
-
-            float planetRadius = planets[i].scale;
-
-            float interactDistance =
-                BASE_INTERACT_DISTANCE + planetRadius * INTERACT_RADIUS_MULT;
+            float interactDistance = BASE_INTERACT_DISTANCE + planets[i].scale * INTERACT_RADIUS_MULT;
 
             if (distanceToPlanet <= interactDistance) {
-
                 state = static_cast<int>(i);
-
-                std::cout << "[STATE] Changed to " << state
-                    << " (planet " << i
-                    << ", interactDist=" << interactDistance << ")\n";
-
+                std::cout << "[STATE] Changed to " << state << "\n";
                 break;
             }
         }
-
     }
+    enterPressedLastFrame = enterPressedNow;
 
-    if (state!=0 && QPressedNow && !QPressedLastFrame) {
-
-
-                state = static_cast<int>(0);
-
-                std::cout << "[STATE] Changed to 0" << state
-                    << "\n";
-
+    // --- EXIT PLANET (Q) ---
+    if (state != 0 && QPressedNow && !QPressedLastFrame) {
+        state = 0;
+        std::cout << "[STATE] Returned to Solar System\n";
     }
+    QPressedLastFrame = QPressedNow;
 
+    // --- ALIEN CATCHING LOGIC ---
+    static bool mousePressedLastFrame = false;
+    bool mousePressedNow = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
+    if (state != 0 && mousePressedNow && !mousePressedLastFrame) {
+        // 1. REPLICATE THE ANIMATION MATH FROM drawAlien
+        float time = (float)glfwGetTime();
+        float orbitSpeed = 0.5f;
+        float angle = time * orbitSpeed;
+        float radius = 8.0f;
+
+        float orbitX = cos(angle) * radius;
+        float orbitZ = sin(angle) * radius;
+        float bobbing = sin(time * 2.0f) * 0.5f;
+
+        // The alien's actual world position based on your draw code:
+        glm::vec3 currentAlienPos = cameraPos + glm::vec3(orbitX, bobbing, orbitZ);
+
+        // 2. VECTOR MATH
+        glm::vec3 dirToAlien = glm::normalize(currentAlienPos - cameraPos);
+
+        // 3. PRECISION CHECK
+        float hitPrecision = glm::dot(cameraFront, dirToAlien);
+
+        // Since the alien orbits at a radius of 8.0f, it's a bit far.
+        // 0.98f is a fair "tight" hitbox. 0.95f is easier.
+        if (hitPrecision > 0.97f) {
+            std::cout << "[HIT] Alien captured in state: " << state << " (Precision: " << hitPrecision << ")" << std::endl;
+
+            if (state == 1) mercuryCaught = true;
+            else if (state == 2) venusCaught = true;
+            else if (state == 4) marsCaught = true;
+            else if (state == 5) jupiterCaught = true;
+            else if (state == 6) saturnCaught = true;
+            else if (state == 7) uranusCaught = true;
+            else if (state == 8) neptuneCaught = true;
+            else if (state == 9) plutoCaught = true;
+        }
+        else {
+            std::cout << "[MISS] Precision was: " << hitPrecision << " (Need > 0.97)" << std::endl;
+        }
+    }
+    mousePressedLastFrame = mousePressedNow;
 }

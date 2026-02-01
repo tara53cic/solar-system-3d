@@ -1,8 +1,6 @@
 #include "../Header/Vertices.h"
 
 //temena 
-    // 
-    //pozadina
 
 
 //plo?ica sa imenom
@@ -25,66 +23,18 @@ float verticesTopLeftRect[] = {
     -0.4f,  1.0f,    1.0f, 1.0f   // top-right
 };
 
+//video
 
-float verticesPlutoIcon[] = {
-    //   X      Y      U     V
-     0.93f, 1.00f,   0.0f, 1.0f,   // top-left
-     0.93f, 0.88f,   0.0f, 0.0f,   // bottom-left
-     1.0f, 0.88f,   1.0f, 0.0f,   // bottom-right
-     1.0f, 1.00,   1.0f, 1.0f    // top-right
-};
+float videoVertices[] = {
+	// Positions   // TexCoords
+	-1.0f,  1.0f,  0.0f, 1.0f,
+	-1.0f, -1.0f,  0.0f, 0.0f,
+	 1.0f, -1.0f,  1.0f, 0.0f,
 
-float verticesNeptuneIcon[] = {
-	//   X      Y      U     V
-	 0.86f, 1.00f,   0.0f, 1.0f,   // top-left
-	 0.86f, 0.88f,   0.0f, 0.0f,   // bottom-left
-	 0.93f, 0.88f,   1.0f, 0.0f,   // bottom-right
-	 0.93f, 1.00f,   1.0f, 1.0f    // top-right
+	-1.0f,  1.0f,  0.0f, 1.0f,
+	 1.0f, -1.0f,  1.0f, 0.0f,
+	 1.0f,  1.0f,  1.0f, 1.0f
 };
-
-float verticesUranusIcon[] = {
-	//   X      Y      U     V
-	 0.79f, 1.00f,   0.0f, 1.0f,   // top-left
-	 0.79f, 0.88f,   0.0f, 0.0f,   // bottom-left
-	 0.86f, 0.88f,   1.0f, 0.0f,   // bottom-right
-	 0.86f, 1.00f,   1.0f, 1.0f    // top-right
-};
-float verticesSaturnIcon[] = {
-	//   X      Y      U     V
-	 0.72f, 1.00f,   0.0f, 1.0f,   // top-left
-	 0.72f, 0.88f,   0.0f, 0.0f,   // bottom-left
-	 0.79f, 0.88f,   1.0f, 0.0f,   // bottom-right
-	 0.79f, 1.00f,   1.0f, 1.0f    // top-right
-};
-float verticesJupiterIcon[] = {
-	//   X      Y      U     V
-	 0.65f, 1.00f,   0.0f, 1.0f,   // top-left
-	 0.65f, 0.88f,   0.0f, 0.0f,   // bottom-left
-	 0.72f, 0.88f,   1.0f, 0.0f,   // bottom-right
-	 0.72f, 1.00f,   1.0f, 1.0f    // top-right
-};
-float verticesMarsIcon[] = {
-	//   X      Y      U     V
-	 0.57f, 1.00f,   0.0f, 1.0f,   // top-left
-	 0.57f, 0.88f,   0.0f, 0.0f,   // bottom-left
-	 0.65f, 0.88f,   1.0f, 0.0f,   // bottom-right
-	 0.65f, 1.00f,   1.0f, 1.0f    // top-right
-};
-float verticesVenusIcon[] = {
-	//   X      Y      U     V
-	 0.50f, 1.00f,   0.0f, 1.0f,   // top-left
-	 0.50f, 0.88f,   0.0f, 0.0f,   // bottom-left
-	 0.57f, 0.88f,   1.0f, 0.0f,   // bottom-right
-	 0.57f, 1.00f,   1.0f, 1.0f    // top-right
-};
-float verticesMercuryIcon[] = {
-	//   X      Y      U     V
-	 0.43f, 1.00f,   0.0f, 1.0f,   // top-left
-	 0.43f, 0.88f,   0.0f, 0.0f,   // bottom-left
-	 0.50f, 0.88f,   1.0f, 0.0f,   // bottom-right
-	 0.50f, 1.00f,   1.0f, 1.0f    // top-right
-};
-//
 
 std::vector<float> generateCrosshairVertices(float aspect) {
 	float cSize = 0.02f;

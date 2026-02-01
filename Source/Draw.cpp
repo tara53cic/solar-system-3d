@@ -36,12 +36,10 @@ void drawDistanceBackground(unsigned int distanceBackgroundShader, unsigned int 
 void drawAlienIcon(unsigned int alienIconShader, unsigned int VAOalienIcon, unsigned int alienIconTexture) {
 
     glUseProgram(alienIconShader);
-
-    glActiveTexture(GL_TEXTURE0);
+    glUniform1i(glGetUniformLocation(alienIconShader, "uTex0"), 0);
     glBindTexture(GL_TEXTURE_2D, alienIconTexture);
-
     glBindVertexArray(VAOalienIcon);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void drawHelp(unsigned int backgroundShader, unsigned int VAOrect, unsigned int backgroundTexture) {
@@ -171,7 +169,7 @@ void drawAlien(unsigned int alienShader, AlienModel& alien, const glm::mat4& mod
     float time = (float)glfwGetTime();
 
     // animacija...
-    float orbitSpeed = 0.8f;
+    float orbitSpeed = 0.5f;
     float angle = time * orbitSpeed; 
     float radius = 8.0f;
 

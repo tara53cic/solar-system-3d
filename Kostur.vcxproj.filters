@@ -104,6 +104,18 @@
     <None Include="Shaders\alien.frag">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Shaders\video.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\video.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\glass.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\glass.frag">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\nametag2.png">

@@ -155,10 +155,14 @@
     <None Include="Shaders\3dshader.vert" />
     <None Include="Shaders\alien.frag" />
     <None Include="Shaders\alien.vert" />
+    <None Include="Shaders\glass.frag" />
+    <None Include="Shaders\glass.vert" />
     <None Include="Shaders\rect.frag" />
     <None Include="Shaders\rect.vert" />
     <None Include="Shaders\skysphere.frag" />
     <None Include="Shaders\skysphere.vert" />
+    <None Include="Shaders\video.frag" />
+    <None Include="Shaders\video.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\2k_ceres_fictional.jpg" />
