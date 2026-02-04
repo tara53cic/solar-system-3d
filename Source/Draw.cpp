@@ -138,7 +138,6 @@ void drawPlanetWithLighting(
     glUniformMatrix4fv(glGetUniformLocation(planetShader, "uP"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(glGetUniformLocation(planetShader, "uM"), 1, GL_FALSE, glm::value_ptr(model));
 
-    // Light uniforms
     glUniform3fv(glGetUniformLocation(planetShader, "uSunPos"), 1, glm::value_ptr(sunPos));
     glUniform3fv(glGetUniformLocation(planetShader, "uViewPos"), 1, glm::value_ptr(cameraPos));
 
@@ -220,6 +219,37 @@ void drawAlien(unsigned int alienShader, AlienModel& alien, const glm::mat4& mod
     glUniformMatrix4fv(glGetUniformLocation(alienShader, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     glUniform1i(glGetUniformLocation(alienShader, "alienTexture"), 0);
+    alien.draw();
+}
+
+void drawAlienStationary(
+    unsigned int alienShader,
+    AlienModel& alien,
+    const glm::mat4& model,
+    const glm::mat4& projection,
+    const glm::mat4& view,
+    const glm::vec3& cameraPos,
+    const glm::vec3& worldPos
+) {
+    glUseProgram(alienShader);
+
+    glm::mat4 finalModel = glm::mat4(1.0f);
+
+    finalModel = glm::translate(finalModel, worldPos);
+
+
+    glm::vec3 dir = glm::normalize(cameraPos - worldPos);
+    float angle = atan2(dir.x, dir.z);
+    finalModel = glm::rotate(finalModel, angle, glm::vec3(0, 1, 0));
+
+    finalModel = finalModel * model;
+
+    glUniformMatrix4fv(glGetUniformLocation(alienShader, "model"), 1, GL_FALSE, glm::value_ptr(finalModel));
+    glUniformMatrix4fv(glGetUniformLocation(alienShader, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(alienShader, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+    glUniform1i(glGetUniformLocation(alienShader, "alienTexture"), 0);
+
     alien.draw();
 }
 

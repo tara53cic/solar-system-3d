@@ -28,6 +28,9 @@ bool ENABLE_CULL_FACE = false;
 extern bool mercuryCaught, venusCaught, marsCaught, jupiterCaught,
 saturnCaught, uranusCaught, neptuneCaught, plutoCaught;
 
+bool hasMovedAtAll = false;
+bool isNearPlanet = false;
+
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     if (firstMouse) {
@@ -106,7 +109,17 @@ void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, con
     bool QPressedNow = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
 
     // --- MOVEMENT (Only in State 0) ---
+    isNearPlanet = false;
+
     if (state == 0) {
+        // Check for movement
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS ||
+            glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS ||
+            glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS ||
+            glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+            hasMovedAtAll = true;
+        }
+
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
             cameraPos += cameraSpeedSim * cameraFront * deltaTime;
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -134,9 +147,18 @@ void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, con
 
             if (distanceToPlanet <= interactDistance) {
                 state = static_cast<int>(i);
-                std::cout << "[STATE] Changed to " << state << "\n";
                 break;
             }
+        }
+    }
+    for (size_t i = 1; i < planets.size(); i++) {
+        glm::vec3 planetPos(planets[i].x, 0.0f, 0.0f);
+        float distanceToPlanet = glm::length(cameraPos - planetPos);
+        float interactDistance = BASE_INTERACT_DISTANCE + planets[i].scale * INTERACT_RADIUS_MULT;
+
+        if (distanceToPlanet <= interactDistance) {
+            isNearPlanet = true;
+            break;
         }
     }
     enterPressedLastFrame = enterPressedNow;
@@ -153,7 +175,6 @@ void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, con
     bool mousePressedNow = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
 
     if (state != 0 && mousePressedNow && !mousePressedLastFrame) {
-        // 1. REPLICATE THE ANIMATION MATH FROM drawAlien
         float time = (float)glfwGetTime();
         float orbitSpeed = 0.5f;
         float angle = time * orbitSpeed;
@@ -163,17 +184,12 @@ void processInput(GLFWwindow* window, float deltaTime, float distanceFactor, con
         float orbitZ = sin(angle) * radius;
         float bobbing = sin(time * 2.0f) * 0.5f;
 
-        // The alien's actual world position based on your draw code:
         glm::vec3 currentAlienPos = cameraPos + glm::vec3(orbitX, bobbing, orbitZ);
 
-        // 2. VECTOR MATH
         glm::vec3 dirToAlien = glm::normalize(currentAlienPos - cameraPos);
 
-        // 3. PRECISION CHECK
         float hitPrecision = glm::dot(cameraFront, dirToAlien);
 
-        // Since the alien orbits at a radius of 8.0f, it's a bit far.
-        // 0.98f is a fair "tight" hitbox. 0.95f is easier.
         if (hitPrecision > 0.97f) {
             std::cout << "[HIT] Alien captured in state: " << state << " (Precision: " << hitPrecision << ")" << std::endl;
 

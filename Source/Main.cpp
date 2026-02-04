@@ -39,13 +39,20 @@ unsigned sunTexture, mercuryTexture, venusTexture, earthTexture,
 	marsTexture, jupiterTexture, saturnTexture,
 	uranusTexture, neptuneTexture, plutoTexture,saturnRingTexture;
 
+
 //Planets-skies
 
 unsigned mercurySkyTexture, venusSkyTexture, marsSkyTexture,
 	jupiterSkyTexture, saturnSkyTexture,
 	uranusSkyTexture, neptuneSkyTexture, plutoSkyTexture;
+unsigned earthSkyTexture;
 
 unsigned windowTexture, dashboardTexture, distanceCoverTexture;
+
+unsigned wasdTexture, takeoffTexture, nametagTexture, goalTexture, onboardTexture, missionAccomplishedTexture, missionFailedTexture;
+
+extern bool hasMovedAtAll;
+extern bool isNearPlanet;
 
 
 // ------------------------------- HELPER FUNCTIONS -------------------------------
@@ -88,7 +95,7 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glEnable(GL_DEPTH_TEST); // bitno za 3D scene
+    glEnable(GL_DEPTH_TEST);
 
     // ---------------- TEXT RENDERER ----------------
     TextRenderer textRenderer(mode->width, mode->height);
@@ -169,10 +176,21 @@ int main() {
     preprocessTexture(uranusSkyTexture, "Resources/uranus_sky.png");
     preprocessTexture(neptuneSkyTexture, "Resources/neptune_sky.png");
     preprocessTexture(plutoSkyTexture, "Resources/pluto_sky.png");
+    preprocessHDRTexture(earthSkyTexture, "Resources/golden_gate_hills_4k.hdr");
 
+    //elementi u raketi
     preprocessTexture(windowTexture, "Resources/Glass-Texture-Transparent.png");
     preprocessTexture(dashboardTexture, "Resources/dashboard.png");
     preprocessTexture(distanceCoverTexture, "Resources/distancecover.png");
+    preprocessTexture(wasdTexture, "Resources/wasd.png");
+    preprocessTexture(takeoffTexture, "Resources/takeoff-land.png");
+
+    //hintovi
+    preprocessTexture(nametagTexture, "Resources/nametag.png");
+    preprocessTexture(goalTexture, "Resources/goal.png");
+    preprocessTexture(onboardTexture, "Resources/take-onboard.png");
+    preprocessTexture(missionAccomplishedTexture, "Resources/mission-accomplished.png");
+    preprocessTexture(missionFailedTexture, "Resources/mission-failed.png");
 
     float scaleFactor = 1.0f;
     float distanceFactor = 1.0f;
@@ -205,7 +223,7 @@ int main() {
     size_t planetSize = planetMesh.vertices.size() * sizeof(float);
 
 
-    // SKY SPHERE (indexed, textured sphere)
+    // SKY SPHERE 
     SphereMesh skySphereMesh = generateSphereTextured(1.0f, 32, 16);
 
     //RING
@@ -233,7 +251,7 @@ int main() {
 
     std::vector<unsigned int> videoFrames;
 
-    // Load the frames
+    // Učitava frejmove
     int totalFrames = 607; 
     videoFrames.reserve(totalFrames); 
 
@@ -275,14 +293,14 @@ int main() {
     // setup za video
     float frameTimer = 0.0f;
     int currentFrame = 0;
-    float frameDuration = 1.0f / 24.0f; // 24 FPS
+    float frameDuration = 1.0f / 24.0f; 
 
 
 
     // ---------------- MAIN LOOP ----------------
     double lastTime = glfwGetTime();
     const double targetFPS = 75.0;
-    const double targetFrameTime = 1.0 / targetFPS; // 0.013333 seconds
+    const double targetFrameTime = 1.0 / targetFPS; 
 
     while (!glfwWindowShouldClose(window)) {
 
@@ -422,32 +440,79 @@ int main() {
             break;
         }
         case 3: {
-            drawSkySphere(
-                skysphereShader,
-                VAOskySphere,
-                mercurySkyTexture,
-                skySphereMesh,
-                projection,
-                view
-            );
-            //set alien model
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cameraPos + glm::vec3(0.0f, -0.5f, -2.5f));
-            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, glm::radians(-35.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            if (mercuryCaught && venusCaught && marsCaught && jupiterCaught && saturnCaught && uranusCaught && neptuneCaught && plutoCaught) {
+                drawSkySphere(
+                    skysphereShader,
+                    VAOskySphere,
+                    earthSkyTexture,
+                    skySphereMesh,
+                    projection,
+                    view
+                );
 
-            model = glm::scale(model, glm::vec3(0.4f));
+                std::vector<AlienModel*> aliens = {
+                    &alien1, &alien2, &alien3, &alien4,
+                    &alien5, &alien6, &alien7, &alien8
+                };
 
-            drawAlien(
-                alienShader,
-                alien3,
-                model,
-                projection,
-                view, cameraPos
-            );
+                glm::vec3 earthPos = glm::vec3(planets[3].x, 0.0f, 0.0f);
+
+                int count = aliens.size();
+                float radius = 10.0f;
+                float arcAngle = glm::radians(120.0f);
+                float startAngle = -arcAngle / 2.0f;
+
+                for (int i = 0; i < count; i++) {
+                    float t = (count == 1) ? 0.0f : (float)i / (count - 1);
+                    float angle = startAngle + t * arcAngle;
+
+                    float x = sin(angle) * 8.0f;
+                    float z = cos(angle) * radius;
+
+                    glm::vec3 alienPos = earthPos + glm::vec3(x, 0.0f, z);
+
+                    glm::mat4 model = glm::mat4(1.0f);
+                    model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1, 0, 0));
+                    model = glm::scale(model, glm::vec3(0.5f));
+
+                    if (i == 1) {
+                        model = glm::rotate(
+                            model,
+                            glm::radians(180.0f),
+                            glm::vec3(0.0f, 0.0f, 1.0f)
+                        );
+                    }
+                    if (i == 3) {
+                        model = glm::scale(model, glm::vec3(3.0f));
+                    }
+
+                    drawAlienStationary(
+                        alienShader,
+                        *aliens[i],
+                        model,
+                        projection,
+                        view,
+                        cameraPos,
+                        alienPos
+                    );
+                }
+                glUseProgram(nametagShader);
+                glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+                glBindTexture(GL_TEXTURE_2D, missionAccomplishedTexture);
+                glBindVertexArray(videoVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            }
+            else {
+                glUseProgram(nametagShader);
+                glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+                glBindTexture(GL_TEXTURE_2D, missionFailedTexture);
+                glBindVertexArray(videoVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            }
             break;
         }
+
         case 4: {
             drawSkySphere(
                 skysphereShader,
@@ -627,7 +692,7 @@ int main() {
             glBindTexture(GL_TEXTURE_2D, videoFrames[currentFrame]);
             glBindVertexArray(videoVAO);
             glDrawArrays(GL_TRIANGLES, 0, 6);
-        
+
 
             //crew dashboard
             glUseProgram(nametagShader);
@@ -666,16 +731,48 @@ int main() {
             sprintf_s(buffer, "%.2f billions of km", distanceInBillionsKm);
 
             float textScale = 0.7f;
-            float xPos = (mode->width / 2.0f) - 53.0f;
+            float xPos = (mode->width / 2.0f) - 48.0f;
             float yPos = 322.0f;
 
             textRenderer.RenderText(buffer, xPos, yPos, textScale, glm::vec3(1.0f, 1.0f, 1.0f));
 
+            //WASD dashboard
+            if (!isNearPlanet) {
+                glUseProgram(nametagShader);
+                glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+                glBindTexture(GL_TEXTURE_2D, wasdTexture);
+                glBindVertexArray(videoVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            }
+            else {
+                glUseProgram(nametagShader);
+                glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+                glBindTexture(GL_TEXTURE_2D, takeoffTexture);
+                glBindVertexArray(videoVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            
+            }
+        
+
+            if (!hasMovedAtAll) {
+                glUseProgram(nametagShader);
+                glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+                glBindTexture(GL_TEXTURE_2D, goalTexture);
+                glBindVertexArray(videoVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            
+            }
+
+            //nametag
+
+            glUseProgram(nametagShader);
+            glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+            glBindTexture(GL_TEXTURE_2D, nametagTexture);
+            glBindVertexArray(videoVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
 
         }
-
-        drawNametag(nametagShader, VAOnametag, nametagTexture);
-        textRenderer.RenderText("Tara Petricic, RA 141/2022", 25.0f, 28.0f, 1.0f, glm::vec3(1.0f));
 
         
 
@@ -686,6 +783,17 @@ int main() {
             glUniform3f(glGetUniformLocation(distanceBgShader, "uColor"), 1.0f, 1.0f, 1.0f);
             glBindVertexArray(VAOcrosshair);
             glDrawArrays(GL_TRIANGLES, 0, 12);
+
+            //ako nismo nikad uhvatili vanzemaljca, imamo hint
+
+            if (!mercuryCaught && !venusCaught && !marsCaught && !jupiterCaught && !saturnCaught && !uranusCaught && !neptuneCaught && !plutoCaught) {
+                glUseProgram(nametagShader);
+                glUniform1i(glGetUniformLocation(nametagShader, "uTex0"), 0);
+                glBindTexture(GL_TEXTURE_2D, onboardTexture);
+                glBindVertexArray(videoVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            }
+
         }
 
         glDepthMask(GL_TRUE); 
@@ -693,15 +801,13 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-        // 4. FRAME LIMITER LOGIC
+        // FRAME LIMITER 
         double frameEnd = glfwGetTime();
         double frameDuration = frameEnd - currentTime;
 
         if (frameDuration < targetFrameTime) {
-            // Calculate how long we need to wait in milliseconds
             double sleepTime = (targetFrameTime - frameDuration) * 1000.0;
 
-            // Use high_resolution_clock for precise sleeping
             std::this_thread::sleep_for(std::chrono::milliseconds((int)sleepTime));
         }
     }

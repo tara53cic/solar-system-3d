@@ -54,4 +54,14 @@ void drawRing(
 );
 void drawAlien(unsigned int alienShader, AlienModel& alien, const glm::mat4& model,
     const glm::mat4& projection, const glm::mat4& view, glm::vec3 cameraPos);
+
+void drawAlienStationary(
+    unsigned int alienShader,
+    AlienModel& alien,
+    const glm::mat4& model,
+    const glm::mat4& projection,
+    const glm::mat4& view,
+    const glm::vec3& cameraPos,
+    const glm::vec3& worldPos
+);
 #pragma once

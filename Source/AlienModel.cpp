@@ -155,7 +155,7 @@ bool AlienModel::load(const std::string& path) {
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(ModelVertex), (void*)offsetof(ModelVertex, uv));
         glEnableVertexAttribArray(2);
 
-        // Location 3: Color (NEW)
+        // Location 3: Color
         glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(ModelVertex), (void*)offsetof(ModelVertex, color));
         glEnableVertexAttribArray(3);
 

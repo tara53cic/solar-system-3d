@@ -79,11 +79,11 @@ void formVAOs(
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // Color (unused but harmless)
+    // Color
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // UV (unused but harmless)
+    // UV
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(7 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
@@ -215,7 +215,6 @@ void formVAOs(
     glBindVertexArray(videoVAO);
     glBindBuffer(GL_ARRAY_BUFFER, videoVBO);
 
-    // 6 vertices * 4 components (x, y, u, v) * 4 bytes
     glBufferData(GL_ARRAY_BUFFER, 6 * 4 * sizeof(float), videoVertices, GL_STATIC_DRAW);
 
     // Position attribute (Location 0)

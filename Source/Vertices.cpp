@@ -156,14 +156,12 @@ RingMesh generateRing(
 		float cosA = cosf(angle);
 		float sinA = sinf(angle);
 
-		// OUTER vertex
 		mesh.vertices.insert(mesh.vertices.end(), {
 			outerRadius * cosA, 0.0f, outerRadius * sinA,
 			1.0f, 1.0f, 1.0f, 1.0f,
 			(float)i / segments, 1.0f
 			});
 
-		// INNER vertex
 		mesh.vertices.insert(mesh.vertices.end(), {
 			innerRadius * cosA, 0.0f, innerRadius * sinA,
 			1.0f, 1.0f, 1.0f, 1.0f,
@@ -200,7 +198,7 @@ SphereMesh generatePlanetTextured(float radius, int sectorCount, int stackCount)
 			mesh.vertices.push_back(y);
 			mesh.vertices.push_back(z);
 
-			// 2. Normal (3 floats) - Direction the surface faces
+			// 2. Normal (3 floats)
 			mesh.vertices.push_back(x * lengthInv);
 			mesh.vertices.push_back(y * lengthInv);
 			mesh.vertices.push_back(z * lengthInv);
