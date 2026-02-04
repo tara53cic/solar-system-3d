@@ -31,6 +31,18 @@ void drawSphere(unsigned int unifiedShader,
     const glm::mat4& projection,
     const glm::mat4& view);
 
+void drawPlanetWithLighting(
+    unsigned int planetShader,
+    unsigned int VAOball,
+    unsigned int planetTexture,
+    const SphereMesh& ballMesh,
+    const glm::mat4& model,
+    const glm::mat4& projection,
+    const glm::mat4& view,
+    const glm::vec3& sunPos,
+    const glm::vec3& cameraPos
+);
+
 void drawRing(
     unsigned int unifiedShader,
     unsigned int VAOring,

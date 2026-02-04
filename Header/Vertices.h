@@ -46,3 +46,5 @@ RingMesh generateRing(
     int segments
 );
 
+SphereMesh generatePlanetTextured(float radius, int sectorCount, int stackCount);
+

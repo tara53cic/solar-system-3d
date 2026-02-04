@@ -13,6 +13,8 @@ void formVAOs(
 
     SphereMesh ballMesh, unsigned int& VAOball,
 
+    SphereMesh planetMesh, unsigned int& VAOplanet,
+
     RingMesh ringMesh, unsigned int& VAOring,
     float* verticesCrosshair, size_t verticesCrosshairSize, unsigned int& VAOcrosshair,
 
@@ -122,6 +124,40 @@ void formVAOs(
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOball);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, ballMesh.indices.size() * sizeof(unsigned int), ballMesh.indices.data(), GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
+
+    //--------------Planets------------------
+    unsigned int VBOplanet, EBOplanet;
+    glGenVertexArrays(1, &VAOplanet);
+    glGenBuffers(1, &VBOplanet);
+    glGenBuffers(1, &EBOplanet);
+
+    glBindVertexArray(VAOplanet);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBOplanet);
+    glBufferData(GL_ARRAY_BUFFER, planetMesh.vertices.size() * sizeof(float), planetMesh.vertices.data(), GL_STATIC_DRAW);
+
+    GLsizei stride = 12 * sizeof(float);
+
+    // 0. Pozicija (3 floats)
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // 1. Normala (3 floats) 
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    // 2. Boja (4 floats) 
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    // 3. UV (2 floats) 
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, stride, (void*)(10 * sizeof(float)));
+    glEnableVertexAttribArray(3);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOplanet);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, planetMesh.indices.size() * sizeof(unsigned int), planetMesh.indices.data(), GL_STATIC_DRAW);
 
     glBindVertexArray(0);
 

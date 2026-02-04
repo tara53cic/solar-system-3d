@@ -122,6 +122,34 @@ void drawSphere(
     glDrawElements(GL_TRIANGLES, ballMesh.indices.size(), GL_UNSIGNED_INT, 0);
 }
 
+void drawPlanetWithLighting(
+    unsigned int planetShader,
+    unsigned int VAOball,
+    unsigned int planetTexture,
+    const SphereMesh& ballMesh,
+    const glm::mat4& model,
+    const glm::mat4& projection,
+    const glm::mat4& view,
+    const glm::vec3& sunPos,
+    const glm::vec3& cameraPos
+) {
+    glUseProgram(planetShader);
+    glUniformMatrix4fv(glGetUniformLocation(planetShader, "uV"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(planetShader, "uP"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(planetShader, "uM"), 1, GL_FALSE, glm::value_ptr(model));
+
+    // Light uniforms
+    glUniform3fv(glGetUniformLocation(planetShader, "uSunPos"), 1, glm::value_ptr(sunPos));
+    glUniform3fv(glGetUniformLocation(planetShader, "uViewPos"), 1, glm::value_ptr(cameraPos));
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, planetTexture);
+    glUniform1i(glGetUniformLocation(planetShader, "uTexture"), 0);
+
+    glBindVertexArray(VAOball);
+    glDrawElements(GL_TRIANGLES, ballMesh.indices.size(), GL_UNSIGNED_INT, 0);
+}
+
 void drawRing(
     unsigned int unifiedShader,
     unsigned int VAOring,

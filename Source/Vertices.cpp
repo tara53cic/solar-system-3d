@@ -181,6 +181,56 @@ RingMesh generateRing(
 	return mesh;
 }
 
+SphereMesh generatePlanetTextured(float radius, int sectorCount, int stackCount) {
+	SphereMesh mesh;
+	float lengthInv = 1.0f / radius;
+
+	for (int i = 0; i <= stackCount; ++i) {
+		float stackAngle = M_PI / 2 - i * M_PI / stackCount;
+		float xy = radius * cosf(stackAngle);
+		float z = radius * sinf(stackAngle);
+
+		for (int j = 0; j <= sectorCount; ++j) {
+			float sectorAngle = j * 2 * M_PI / sectorCount;
+			float x = xy * cosf(sectorAngle);
+			float y = xy * sinf(sectorAngle);
+
+			// 1. Position (3 floats)
+			mesh.vertices.push_back(x);
+			mesh.vertices.push_back(y);
+			mesh.vertices.push_back(z);
+
+			// 2. Normal (3 floats) - Direction the surface faces
+			mesh.vertices.push_back(x * lengthInv);
+			mesh.vertices.push_back(y * lengthInv);
+			mesh.vertices.push_back(z * lengthInv);
+
+			// 3. Color (4 floats)
+			mesh.vertices.push_back(0.2f); mesh.vertices.push_back(0.6f);
+			mesh.vertices.push_back(1.0f); mesh.vertices.push_back(1.0f);
+
+			// 4. UV (2 floats)
+			mesh.vertices.push_back((float)j / sectorCount);
+			mesh.vertices.push_back(1.0f - ((float)i / stackCount));
+		}
+	}
+	for (int i = 0; i < stackCount; ++i) {
+		int k1 = i * (sectorCount + 1);
+		int k2 = k1 + sectorCount + 1;
+
+		for (int j = 0; j < sectorCount; ++j, ++k1, ++k2) {
+			mesh.indices.push_back(k1);
+			mesh.indices.push_back(k2);
+			mesh.indices.push_back(k1 + 1);
+
+			mesh.indices.push_back(k1 + 1);
+			mesh.indices.push_back(k2);
+			mesh.indices.push_back(k2 + 1);
+		}
+	}
+	return mesh;
+}
+
 
 
 

@@ -15,6 +15,7 @@ void formVAOs(
 
     //Planetarna sfera
     SphereMesh ballMesh, unsigned int& VAOball,
+    SphereMesh planetMesh, unsigned int& VAOplanet,
 
     RingMesh ringMesh, unsigned int& VAOring,
     float* verticesCrosshair, size_t verticesCrosshairSize, unsigned int& VAOcrosshair,

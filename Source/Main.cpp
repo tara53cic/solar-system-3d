@@ -16,6 +16,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <thread>
+#include <chrono>
 
 // ------------------------------- GLOBAL VARIABLES -------------------------------
 
@@ -190,11 +192,18 @@ int main() {
 
     // ---------------- VERTICES ----------------
 
-    //PLANETS
+    //Sun
     SphereMesh ballMesh = generateSphereTextured(1.0f, 40, 40);
 
     float* ballVertices = ballMesh.vertices.data();
     size_t ballSize = ballMesh.vertices.size() * sizeof(float);
+
+    //Planets
+
+    SphereMesh planetMesh=generatePlanetTextured(1.0f, 40, 40);
+    float* planetVertices = planetMesh.vertices.data();
+    size_t planetSize = planetMesh.vertices.size() * sizeof(float);
+
 
     // SKY SPHERE (indexed, textured sphere)
     SphereMesh skySphereMesh = generateSphereTextured(1.0f, 32, 16);
@@ -239,13 +248,14 @@ int main() {
 
 
     // ---------------- SHADERS ----------------
-    unsigned nametagShader, distanceBgShader, unifiedShader, skysphereShader, alienShader, videoShader, glassShader;
-    loadAllShaders(nametagShader, distanceBgShader, skysphereShader,unifiedShader, alienShader, videoShader,glassShader);
+    unsigned nametagShader, distanceBgShader, unifiedShader, skysphereShader, planetShader, alienShader, videoShader, glassShader;
+    loadAllShaders(nametagShader, distanceBgShader, skysphereShader,unifiedShader, planetShader, alienShader, videoShader,glassShader);
 
 
     // ---------------- VAOs ----------------
     unsigned VAOnametag, VAOdistanceBg;
     unsigned VAOball;
+    unsigned VAOplanet;
     unsigned VAOskySphere;
     unsigned VAOsaturnRing;
     unsigned VAOcrosshair;
@@ -257,6 +267,7 @@ int main() {
         verticesTopLeftRect, sizeof(verticesTopLeftRect), VAOdistanceBg,
         skySphereMesh, VAOskySphere,
         ballMesh, VAOball,
+        planetMesh, VAOplanet,
         saturnRing, VAOsaturnRing,
         crosshairData.data(), crosshairData.size() * sizeof(float), VAOcrosshair,
         videoVertices, videoVAO
@@ -270,11 +281,12 @@ int main() {
 
     // ---------------- MAIN LOOP ----------------
     double lastTime = glfwGetTime();
+    const double targetFPS = 75.0;
+    const double targetFrameTime = 1.0 / targetFPS; // 0.013333 seconds
 
     while (!glfwWindowShouldClose(window)) {
 
-  
-        //frame limiter
+  	  // Frame time calculation
         double currentTime = glfwGetTime();
         float deltaTime = static_cast<float>(currentTime - lastTime);
         lastTime = currentTime;
@@ -337,22 +349,37 @@ int main() {
 
             // Planets
 
-            for (const auto& p : planets) {
+            for (int i = 0; i < planets.size(); i++) {
+                const auto& p = planets[i];
                 glm::mat4 model = glm::mat4(1.0f);
 
                 model = glm::translate(model, glm::vec3(p.x, 0.0f, 0.0f));
                 model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1, 0, 0));
                 model = glm::scale(model, glm::vec3(p.scale));
-
-                drawSphere(
-                    unifiedShader,
-                    VAOball,
-                    p.texture,
-                    ballMesh,
-                    model,
-                    projection,
-                    view
-                );
+                if (i == 0) {
+                    drawSphere(
+                        unifiedShader,
+                        VAOball,
+                        p.texture,
+                        ballMesh,
+                        model,
+                        projection,
+                        view
+                    );
+                }
+                else {
+                drawPlanetWithLighting(
+					planetShader,
+					VAOplanet,
+					p.texture,
+					planetMesh,
+					model,
+					projection,
+					view,
+					glm::vec3(0.0f),
+					cameraPos
+				);
+                }
             }
             break;
         }
@@ -665,6 +692,18 @@ int main() {
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+
+        // 4. FRAME LIMITER LOGIC
+        double frameEnd = glfwGetTime();
+        double frameDuration = frameEnd - currentTime;
+
+        if (frameDuration < targetFrameTime) {
+            // Calculate how long we need to wait in milliseconds
+            double sleepTime = (targetFrameTime - frameDuration) * 1000.0;
+
+            // Use high_resolution_clock for precise sleeping
+            std::this_thread::sleep_for(std::chrono::milliseconds((int)sleepTime));
+        }
     }
 
     glfwDestroyWindow(window);

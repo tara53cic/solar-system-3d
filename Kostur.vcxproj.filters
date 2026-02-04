@@ -116,6 +116,12 @@
     <None Include="Shaders\glass.frag">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Shaders\planet.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\planet.frag">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\nametag2.png">

@@ -7,6 +7,7 @@ unsigned int loadAllShaders(
     unsigned int& distanceBackgroundShader,
     unsigned int& skySphereShader,
     unsigned int& sphereShader,
+    unsigned int& planetShader,
     unsigned int& alienShader,
     unsigned int& videoShader,
     unsigned int& glassShader)
@@ -23,6 +24,8 @@ unsigned int loadAllShaders(
 
 
     sphereShader = createShader("Shaders/3dshader.vert", "Shaders/3dshader.frag");
+
+    planetShader= createShader("Shaders/planet.vert", "Shaders/planet.frag");
 
     skySphereShader = createShader(
         "Shaders/skysphere.vert",
