@@ -121,7 +121,6 @@ int main() {
 
 
     // ---------------- TEXTURES ----------------
-    unsigned nametagTexture, distanceBgTexture;
     unsigned mercuryIconCaught, mercuryIconFree;
     unsigned venusIconCaught, venusIconFree;
     unsigned marsIconCaught, marsIconFree;
@@ -130,9 +129,6 @@ int main() {
     unsigned uranusIconCaught, uranusIconFree;
     unsigned neptuneIconCaught, neptuneIconFree;
     unsigned plutoIconCaught, plutoIconFree;
-
-    preprocessTexture(nametagTexture, "Resources/purpletransparent50.png");
-    preprocessTexture(distanceBgTexture, "Resources/purpletransparent50.png");
 
     preprocessTexture(mercuryIconCaught, "Resources/captured1.png");
     preprocessTexture(mercuryIconFree, "Resources/uncaptured1.png");
